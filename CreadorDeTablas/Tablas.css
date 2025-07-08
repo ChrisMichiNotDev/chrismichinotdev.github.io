@@ -1,0 +1,100 @@
+html {
+    font-size: 16px;
+    font-family: Segoe UI,BlinkMacSystemFont,-apple-system,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+input, textarea, select, label{
+font-size: 16px;
+}
+#textoarray {
+height: 200px;
+width:stretch;
+width:-webkit-fill-available;
+width:-moz-available;
+}
+#darkmode {
+	position:fixed;
+	bottom:16px;
+	right:8px;
+	border-radius: 100px;
+	background-color: #fff0;
+	border-width: 0px;
+}
+.claro {
+    background: #e4e7eb;
+    color: black;
+}
+.oscuro {
+    background: #1c1d22;
+    color: #f0feff;
+}
+
+input.claro, textarea.claro, select.claro {
+    background: #ffffff;
+    color: black;
+}
+input[value="Agregar celdas"] {
+    background: #303040;
+    color: #f0feff;
+    border-color: #5d5e66;
+}
+input.oscuro, textarea.oscuro{
+    background: #303040;
+    color: #f0feff;
+    border-color: #5d5e66;
+}
+input.oscuro::placeholder, textarea.oscuro::placeholder {
+opacity: 0.7;
+color: #f0feff;
+}
+input.claro::placeholder, textarea.claro::placeholder {
+opacity: 0.8;
+color: black;
+}
+
+table{
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.sun-editor-editable {
+	z-index: 1;
+}
+
+table thead tr, .se-wrapper-inner se-wrapper-wysiwyg sun-editor-editable table thead tr, .sun-editor-editable table th {
+    background-color: #001839;
+    color: #ffffff;
+}
+
+table th, table td {
+    padding: 5px 5px;
+}
+
+table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+table tbody tr:nth-of-type(even) td {
+	background-color: #e4e7eb;
+	color: black;
+	border: solid black;
+	border-width: 0px 1px;
+}
+
+table tbody tr:nth-of-type(odd) td {
+	background-color: #b5d8e9;
+	color: black;
+	border: solid black;
+	border-width: 0px 1px;
+}
+
+table tbody tr td div, table thead tr th div {
+    text-align: center;
+}
+
+table thead tr th div span, table thead tr th div {
+font-size: 16px;
+}
