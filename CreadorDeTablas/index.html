@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<HTML lang="en-US" class="oscuro">
+<HEAD>
+<meta charset="utf-8">
+<link rel="shortcut icon" href="./favicon.png">
+<link rel="stylesheet" charset="utf-8" href="./Tablas.css">
+<SCRIPT src="./Tablas.js" charset="utf-8"></SCRIPT>
+<TITLE>Creador de Tablas</TITLE>
+
+</HEAD>
+<BODY>
+<button id="darkmode" class="oscuro" onClick="click()">
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
+
+<path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+
+</svg>
+</button>
+<FORM NAME="Agregar celdas">
+<INPUT class="oscuro" TYPE="button"  VALUE="Agregar celdas" onClick="definirvariables()">
+</FORM>
+<FORM NAME="tableproperties" style="margin-bottom:30px;">
+<label for="widthform">Longitud</label>
+<br>
+<INPUT class="oscuro" type="text" name="width" placeholder="2" id="widthform">
+<br>
+<label for="heigthform">Altura</label>
+<br>
+<INPUT class="oscuro" type="text" name="height" placeholder="3" id="heigthform">
+<br>
+<label for="enlazar">Columna a enlazar</label>
+<br>
+<INPUT class="oscuro" type="text" name="columna a enlazar" placeholder="Pensado para FeatherWiki" id="enlazar">
+<br>
+<label for="separacion">caracteres de separación</label>
+<br>
+<INPUT class="oscuro" type="text" name="caracteres de separacion" placeholder="," id="separacion">
+<br>
+<label for="borrar">Caracteres a borrar del inicio (separados por comas)</label>
+<br>
+<INPUT class="oscuro" type="text" name="Caracteres a borrar del inicio" placeholder="¡,¿" id="borrar">
+<br>
+<label for="alineamiento">Alineamiento:</label>
+
+<br>
+
+<select class="oscuro" id="alineamiento">
+<option value="Nada">Nada</option>
+<option value="start">Inicio</option>
+<option value="end">Fin</option>
+<option value="left">Izquierda</option>
+<option value="right">Derecha</option>
+<option value="center">Centro</option>
+<option value="justify">Justificado</option>
+<option value="match-parent">Match-Parent</option>
+<option value="-Webkit-Match-Parent">-Webkit-Match-Parent</option>
+</select>
+<br>
+<label for="textoarrray">Texto de las celdas</label>
+<br>
+<textarea class="oscuro" placeholder="¡¿¿¡Hello,\n¡¿¿¡World,\n¡¿¿¡Hola,\n¡¿¿¡Mundo,\n¡¿¿¡Saluton,\n¡¿¿¡Mondo\n" id="textoarray"></textarea>
+</FORM>
+
+<textarea class="oscuro" style="width:fit-content;height:250px;display:none" id="textotabla"></textarea>
+
+</BODY>
+</HTML>
