@@ -2,6 +2,37 @@ html {
     font-size: 16px;
     font-family: Segoe UI,BlinkMacSystemFont,-apple-system,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
 }
+a {
+  font-size:20px;
+}
+a.claro:link {
+  color:#3d4292;
+}
+a.oscuro:link {
+  color:#73acf5;
+}
+a.claro:visited {
+  color:#7400b3;
+}
+a.oscuro:visited {
+  color:#ff8ce9;
+}
+
+#girartabla {
+  grid-area:e;
+  margin:0px 10px;
+}
+.container {
+  display: grid;
+  grid-template-areas:
+    "g . h"
+    "a . c"
+    "d e f";
+  justify-content: start;
+  align-items: center;
+  justify-items: center;
+}
+
 input, textarea, select, label{
 font-size: 16px;
 }
