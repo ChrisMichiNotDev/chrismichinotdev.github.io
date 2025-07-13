@@ -1,22 +1,31 @@
-var listaceldas, conteo, conteoencabezado = 0, conteolog, widthform, heightform, enlazar, separacion, borrarr, textotabla, tabla, thead, tbody, trh, trb, td, th, div, conteodark = 0, imgcla, imgdrk;
+var conteo, conteolog, conteoencabezado = 0, conteodark = 0, borradoinicio, borradofin, modocolumna, enlazarfilm1xw, enlazarfilxw;
+var listaceldas, widthform, heightform, enlazarcol, enlazarfil, separacion, borrarr, textotabla, enlaceporcol, enlaceporfila, enlaceinicio, enlacefin, ignorarinicioenlace, ignorarfinenlace, enlazarpalabras;
+var tabla, thead, tbody, trh, trb, td, th, div;
+
 document.addEventListener("DOMContentLoaded", (event) => {
-  // Page has loaded
-  document.querySelector("#textoarray").placeholder = document.querySelector("#textoarray").placeholder.replaceAll('\\n', '\n')
-  definirvariables(false);
-  const dark = document.getElementById("darkmode");
-  dark.addEventListener("mouseup", () => {
-darkchange();
-});
+// Page has loaded
+document.querySelector("#textoarray").placeholder = document.querySelector("#textoarray").placeholder.replaceAll('\\n', '\n')
+definirvariables(false);
+const dark = document.getElementById("darkmode");
+ dark.addEventListener("mouseup", () => {
+  darkchange();
+  });
 const giro = document.getElementById("girartabla");
-  giro.addEventListener("mouseup", () => {
-girar(document.getElementById('widthform'), document.getElementById('heigthform'));
+ giro.addEventListener("mouseup", () => {
+  girar(document.getElementById('widthform'), document.getElementById('heigthform'));
+ });
+const giro2 = document.getElementById("girarenlaces");
+ giro2.addEventListener("mouseup", () => {
+  girar(document.getElementById('enlazarcol'), document.getElementById('enlazarfil'));
+ });
 });
-});
+
 function girar(el1,el2,el3) {
 el3 = vloph(el2);
 el2.value = vloph(el1);
 el1.value = el3;
 }
+
 function darkchange(conversion, boton) {
 boton = document.querySelector("#darkmode > svg > path");
  if (conteodark == 0) {
@@ -38,6 +47,12 @@ boton = document.querySelector("#darkmode > svg > path");
 }
 
 function definirvariables(col = false) {
+ if (col) {
+  modocolumna = true
+ }
+ else if (!col) {
+  modocolumna = false;
+ }
 if (document.querySelector('table') !== null ) {
 document.querySelector('table').remove();
 }
@@ -47,13 +62,81 @@ tbody = document.createElement('tbody');
 trh = document.createElement('tr');
 widthform = Number(vloph(document.getElementById('widthform')));
 heightform = Number(vloph(document.getElementById('heigthform')));
-enlazar	= Number(vloph(document.getElementById('enlazar')))-1;
+enlazarcol = Number(vloph(document.getElementById('enlazarcol')))-1;
+enlazarfil = Number(vloph(document.getElementById('enlazarfil')));
+enlaceinicio = vloph(document.getElementById('enlaceinicio'));
+enlacefin = vloph(document.getElementById('enlacefin'));
+ignorarinicioenlace = vloph(document.getElementById('ignorarinicioenlace'));
+ignorarfinenlace = vloph(document.getElementById('ignorarfinenlace'));
+enlazarpalabras = vloph(document.getElementById('enlazarpalabras')).split(',');
+determinarenlace()
+aplanarpalabras()
 separacion = vloph(document.getElementById('separacion'));
 borrarr = vloph(document.getElementById('borrar')).split(',');
 alineamiento = vloph(document.getElementById('alineamiento'));
 listaceldas = vloph(document.getElementById('textoarray')).replaceAll('\n', '').split(String(separacion));
 textotabla = document.getElementById('textotabla');
-creartabla(col);
+creartabla();
+}
+function aplanarpalabras() {
+var conteopal = 0;
+  enlazarpalabras.forEach(palabra => {
+  enlazarpalabras[conteopal] = aplanartexto(palabra);
+  conteopal++;
+ });
+}
+
+function determinarenlace() {
+ if (isNaN(enlazarfil)) {
+  enlaceporfila = false;
+ }
+ else {
+  enlaceporfila = true;
+ }
+ if (isNaN(enlazarcol)) {
+  enlaceporcol = false;
+ }
+ else {
+  enlaceporcol = true;
+ }
+}
+
+function aplanartexto(TextoaAplanar, Textoaplanado = TextoaAplanar) {
+//thanks for this code to Niall Maher (https://www.codu.co/articles/remove-accents-from-a-javascript-string-skgp1inb)
+Textoaplanado = TextoaAplanar.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+Textoaplanado = Textoaplanado.toLowerCase();
+return Textoaplanado;
+}
+
+function enlazarPalabras(indice = conteo, array = listaceldas, listapalabras = enlazarpalabras) {
+arin = aplanartexto(array[indice]);
+ listapalabras.forEach(palabra => {
+ var indexOfFirst = 0, offset = enlaceinicio.length, conteoinfinito = 0;
+   while (indexOfFirst != -1 && palabra != '') {
+    indexOfFirst = arin.indexOf(palabra, indexOfFirst);
+     if (indexOfFirst == -1) {
+      break;
+     }
+     else {
+/*
+      borradoInicioE(array,indice,palabra,indexOfFirst);
+      borradoFinE(array,indice,palabra,indexOfFirst);
+*/
+borradofin = '';
+borradoinicio == '';
+      array[indice] = crearEnlace(array,indice,indexOfFirst,palabra,true);
+//array[indice].slice(0,indexOfFirst) + enlaceinicio + array[indice].slice(indexOfFirst,indexOfFirst+palabra.length) + enlacefin + array[indice].slice(indexOfFirst+palabra.length);
+      arin = aplanartexto(array[indice]);
+     }
+    indexOfFirst = indexOfFirst + palabra.length + offset +1;
+    conteoinfinito++;
+    if (conteoinfinito > 1500) {
+     document.querySelector("summary").innerText = 'infinite loop (more than 1500 iterations)';
+     document.querySelector("summary").style = 'font-size: 25px;';
+     break;
+    }
+   }
+ });
 }
 
 
@@ -67,7 +150,7 @@ function vloph(campoDeTexto) {
 }
 
 
-function creartabla(col) {
+function creartabla() {
 // gracias a mozilla por el concepto general
 //(https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Traversing_an_HTML_table_with_JavaScript_and_DOM_Interfaces)
 //Crear encabezado
@@ -92,7 +175,7 @@ thead.appendChild(trh);
 tabla.appendChild(thead);
 tabla.appendChild(tbody);
 document.body.appendChild(tabla);
-agregarceldas(col);
+agregarceldas();
 document.body.appendChild(creditos);
 }
 
@@ -106,7 +189,7 @@ else {
 }
 }
 
-function agregarceldas(modocolumna = false) {
+function agregarceldas() {
 var sumaaltura = 0, rsaltura = -1, conteoarray = 0, conteodiv = 0;
 
 listaceldas.forEach(elemento => {
@@ -117,21 +200,16 @@ listaceldas.forEach(elemento => {
 });
 conteo = 0;
 conteolog = 0;
+enlazarfilm1xw = (enlazarfil-1) * widthform;
+enlazarfilxw = enlazarfil * widthform;
 const divs = document.querySelectorAll('div:not(.container)');
  if (!modocolumna) {
   divs.forEach(element => {
-//formula: indice del array dividido entre longitud tabla sobrante igual columna enlazada -1
-    if(conteo % widthform == enlazar) {
-     if (String(listaceldas[conteo]).slice(-1) == '*') {
-      listaceldas[conteo] = '[[' + String(listaceldas[conteo]).slice(0,-1) + ']]' + '*';
-     }
-     else {
-      listaceldas[conteo] = '[[' + String(listaceldas[conteo]) + ']]';
-     }
-    }
-    if (alineamiento != 'Nada') {
-     element.style = `text-align: ${alineamiento};`;
-    }
+   Enlazar(enlaceporcol,enlaceporfila,listaceldas,conteo,conteolog,widthform,enlazarcol,enlazarfilm1xw,enlazarfilxw,enlaceinicio,enlacefin);
+   enlazarPalabras();
+   if (alineamiento != 'Nada') {
+    element.style = `text-align: ${alineamiento};`;
+   }
    conteolog++;
    celda = listaceldas[conteo];
    conteo++;
@@ -140,37 +218,24 @@ const divs = document.querySelectorAll('div:not(.container)');
  }
  if (modocolumna) {
   divs.forEach(element => {
-    if (conteodiv != 0) {
-     var conteodivi = conteo+sumaaltura+rsaltura;
-     if(conteolog % widthform == enlazar) {
-      if (String(listaceldas[conteo+sumaaltura+rsaltura]).slice(-1) == '*') {
-       listaceldas[conteo+sumaaltura+rsaltura] = '[[' + String([conteo+sumaaltura+rsaltura]).slice(0,-1) + ']]' + '*';
-      }
-      else {
-       listaceldas[conteo+sumaaltura+rsaltura] = '[[' + String(listaceldas[conteo+sumaaltura+rsaltura]) + ']]';
-      }
-     }
-     celda = listaceldas[conteo+sumaaltura+rsaltura];
-    }
-    else if (conteodiv == 0){
-     if(conteolog % widthform == enlazar) {
-      if (String(listaceldas[conteo]).slice(-1) == '*') {
-       listaceldas[conteo] = '[[' + String(listaceldas[conteo]).slice(0,-1) + ']]' + '*';
-      }
-      else {
-       listaceldas[conteo] = '[[' + String(listaceldas[conteo]) + ']]';
-      }
-     }
-     celda = listaceldas[conteo];
-     rsaltura++;
-    }
-    if (alineamiento != 'Nada') {
-     element.style = `text-align: ${alineamiento};`;
-    }
+   if (conteodiv != 0) {
+    conteocol = conteo+sumaaltura+rsaltura;
+    Enlazar(enlaceporcol,enlaceporfila,listaceldas,conteocol,conteolog,widthform,enlazarcol,enlazarfilm1xw,enlazarfilxw,enlaceinicio,enlacefin);
+    enlazarPalabras(conteocol);
+    celda = listaceldas[conteocol];
+   }
+   else if (conteodiv == 0) {
+    Enlazar(enlaceporcol,enlaceporfila,listaceldas,conteo,conteolog,widthform,enlazarcol,enlazarfilm1xw,enlazarfilxw,enlaceinicio,enlacefin);
+    enlazarPalabras();
+    celda = listaceldas[conteo];
+    rsaltura++;
+   }
+   if (alineamiento != 'Nada') {
+    element.style = `text-align: ${alineamiento};`;
+   }
    element.innerText = celda;
    sumaaltura = sumaaltura + heightform;
    conteodiv++;
-
    conteolog++;
    if (conteodiv % widthform == 0 && conteodiv != 0) {
     conteo++;
@@ -184,6 +249,64 @@ textotabla.value = document.querySelector('table').outerHTML.replaceAll('>', '>\
 textotabla.style = 'width:400px;height:250px;';
 console.log('Busqueda realizada en',conteo,'Divs. Agregadas',conteolog,'celdas de',listaceldas.length,'disponibles');
 }
+//(borradoinicio+borradofin)
+function crearEnlace(array,indice,puntoinicio,palabra,anadiroffset = false) {
+var offset = 0;
+ if (anadiroffset) {
+  offset = borradofin.length + borradoinicio.length;
+ }
+return array[indice].slice(0,puntoinicio)+
+borradoinicio+
+enlaceinicio+
+array[indice].slice(puntoinicio,puntoinicio+palabra.length-offset)+
+enlacefin+
+borradofin+
+array[indice].slice(puntoinicio+palabra.length-offset,array[indice].length);;
+}
+function Enlazar(Columna,Fila,array,indice,cuenta,ope1,ope2,ope3,ope4,inicio,final,ignorarinicio,ignorarfin) {
+ if (Columna) {
+//formula: indice del array dividido entre la longitud de la tabla sobrante igual columna a enlazar-1
+  if(cuenta % ope1 == ope2) {
+   borradoInicioE(array,indice,array[indice],0);
+   borradoFinE(array,indice,array[indice],0);
+   array[indice] = crearEnlace(array,indice,0,array[indice]);
+//borradoinicio + inicio + String(array[indice]) + final + borradofin;
+  }
+ }
+ if (Fila) {
+  if (cuenta >= ope3 && cuenta < ope4 && String(array[indice]).slice(-final.length) != final && String(array[indice]).slice(0,inicio.length) != inicio) {
+   borradoInicioE(array,indice,array[indice],0);
+   borradoFinE(array,indice,array[indice],0);
+   if (String(array[indice]).slice(0,inicio.length) != inicio) {
+    array[indice] = array[indice] = crearEnlace(array,indice,0,array[indice]);
+//borradoinicio + inicio + String(array[indice]) + final + borradofin;
+   }
+/*
+   else {
+    array[indice] = borradoinicio + String(array[indice]) + borradofin;
+   }
+*/
+  }
+ }
+}
+
+function borradoInicioE(array,indice,palabra,puntoinicio) {
+borradoinicio = '';
+ while (array[indice].slice(puntoinicio,puntoinicio+1) == ignorarinicioenlace) {
+  borradoinicio = borradoinicio + array[indice].slice(puntoinicio,puntoinicio+1);
+array[indice] = array[indice].slice(0,puntoinicio) + array[indice].slice(puntoinicio+1,array[indice].length)
+ }
+}
+
+function borradoFinE(array,indice,palabra,puntoinicio) {
+borradofin = '', arind = String(array[indice]);
+ while (array[indice].slice(puntoinicio+palabra.length-1,puntoinicio+palabra.length) == ignorarfinenlace) {
+  borradofin = borradofin + array[indice].slice(puntoinicio+palabra.length-1,puntoinicio+palabra.length);
+array[indice] = array[indice].slice(0,puntoinicio) + array[indice].slice(puntoinicio,puntoinicio+palabra.length-1) + array[indice].slice(puntoinicio+palabra.length);
+  palabra=palabra.slice(0,-1);
+ }
+}
+
 function quitarencabezado() {
  if (conteoencabezado == 0) {
   textotabla.value = textotabla.value.replaceAll('\n<tbody>', '').replaceAll('\n<thead>', '\n<tbody>').replaceAll('\n</thead>', '').replaceAll('<th>', '<td>').replaceAll('</th>', '</td>');
@@ -201,6 +324,6 @@ const creditos = document.createElement('a');
 creditos.innerText = 'Creditos';
 creditos.href = 'creditos.html';
 creditos.className = 'oscuro';
-imgcla = "M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z";
-imgdrk = "M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z";
+const imgcla = "M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z";
+const imgdrk = "M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z";
 listaceldas = [];
