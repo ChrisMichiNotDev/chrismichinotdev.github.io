@@ -18,16 +18,23 @@ a.oscuro:visited {
   color:#ff8ce9;
 }
 
-#girartabla {
+.girar {
   grid-area:e;
   margin:0px 10px;
+  cursor:pointer;
 }
 .container {
   display: grid;
   grid-template-areas:
-    "g . h"
-    "a . c"
-    "d e f";
+    "g i h"
+    "a b c"
+    "d e f"
+    "j k l"
+    "m n o"
+    "p q u"
+    "v w x"
+    "zh zh zh"
+    "z z z";
   justify-content: start;
   align-items: center;
   justify-items: center;
@@ -35,6 +42,9 @@ a.oscuro:visited {
 
 input, textarea, select, label{
 font-size: 16px;
+}
+svg {
+  cursor:pointer;
 }
 #textoarray {
 height: 200px;
@@ -63,10 +73,11 @@ input.claro, textarea.claro, select.claro {
     background: #ffffff;
     color: black;
 }
-input[value="Agregar celdas"] {
+input[type*="button"] {
     background: #303040;
     color: #f0feff;
     border-color: #5d5e66;
+    cursor:pointer;
 }
 input.oscuro, textarea.oscuro{
     background: #303040;
