@@ -60,24 +60,41 @@ tabla = document.createElement('table');
 thead = document.createElement('thead');
 tbody = document.createElement('tbody');
 trh = document.createElement('tr');
-widthform = Number(vloph(document.getElementById('widthform')));
-heightform = Number(vloph(document.getElementById('heigthform')));
-enlazarcol = Number(vloph(document.getElementById('enlazarcol')))-1;
-enlazarfil = Number(vloph(document.getElementById('enlazarfil')));
-enlaceinicio = vloph(document.getElementById('enlaceinicio'));
-enlacefin = vloph(document.getElementById('enlacefin'));
-ignorarinicioenlace = vloph(document.getElementById('ignorarinicioenlace'));
-ignorarfinenlace = vloph(document.getElementById('ignorarfinenlace'));
-enlazarpalabras = vloph(document.getElementById('enlazarpalabras')).split(',');
-determinarenlace()
-aplanarpalabras()
-separacion = vloph(document.getElementById('separacion'));
-borrarr = vloph(document.getElementById('borrar')).split(',');
-alineamiento = vloph(document.getElementById('alineamiento'));
-listaceldas = vloph(document.getElementById('textoarray')).replaceAll('\n', '').split(String(separacion));
+widthform = Number(vloph('widthform'));
+heightform = Number(vloph('heigthform'));
+enlazarcol = Number(vloph('enlazarcol'))-1;
+enlazarfil = Number(vloph('enlazarfil'));
+enlaceinicio = vloph('enlaceinicio');
+enlacefin = vloph('enlacefin');
+ignorarinicioenlace = vloph('ignorarinicioenlace');
+ignorarfinenlace = vloph('ignorarfinenlace');
+enlazarpalabras = vloph('enlazarpalabras').split(',');
+borrarr = vloph('borrar').split(',');
+alineamiento = vloph('alineamiento');
 textotabla = document.getElementById('textotabla');
+determinarenlace();
+aplanarpalabras();
+tomartexto();
 creartabla();
 }
+
+function tomartexto(conteo) {
+conteo = 0;
+separacion = vloph('separacion');
+ if (separacion == '\\n') {
+  separacion='\n'
+ }
+listaceldas = vloph('textoarray').split(separacion);
+ listaceldas.forEach(ele => {
+  listaceldas[conteo] = listaceldas[conteo].replaceAll('\n', '');
+  conteo++;
+ });
+ while (listaceldas.length < widthform * heightform) {
+console.log('añadirrelleno')
+  listaceldas.push('')
+ }
+}
+
 function aplanarpalabras() {
 var conteopal = 0;
   enlazarpalabras.forEach(palabra => {
@@ -118,14 +135,9 @@ arin = aplanartexto(array[indice]);
       break;
      }
      else {
-/*
       borradoInicioE(array,indice,palabra,indexOfFirst);
       borradoFinE(array,indice,palabra,indexOfFirst);
-*/
-borradofin = '';
-borradoinicio == '';
-      array[indice] = crearEnlace(array,indice,indexOfFirst,palabra,true);
-//array[indice].slice(0,indexOfFirst) + enlaceinicio + array[indice].slice(indexOfFirst,indexOfFirst+palabra.length) + enlacefin + array[indice].slice(indexOfFirst+palabra.length);
+      array[indice] = crearEnlace(array,indice,indexOfFirst,palabra.length);
       arin = aplanartexto(array[indice]);
      }
     indexOfFirst = indexOfFirst + palabra.length + offset +1;
@@ -141,6 +153,7 @@ borradoinicio == '';
 
 
 function vloph(campoDeTexto) {
+campoDeTexto = document.getElementById(campoDeTexto);
  if (campoDeTexto.value == '') {
   return campoDeTexto.placeholder;
  }
@@ -213,7 +226,7 @@ const divs = document.querySelectorAll('div:not(.container)');
    conteolog++;
    celda = listaceldas[conteo];
    conteo++;
-   element.innerText = celda;  
+   element.innerText = celda;
   });
  }
  if (modocolumna) {
@@ -247,21 +260,16 @@ const divs = document.querySelectorAll('div:not(.container)');
  }
 textotabla.value = document.querySelector('table').outerHTML.replaceAll('>', '>\n').replaceAll('</div>', '\n</div>');
 textotabla.style = 'width:400px;height:250px;';
-console.log('Busqueda realizada en',conteo,'Divs. Agregadas',conteolog,'celdas de',listaceldas.length,'disponibles');
+console.log('Busqueda realizada en',divs.length,'Divs. Agregadas',conteolog,'celdas de',listaceldas.length,'disponibles');
 }
-//(borradoinicio+borradofin)
-function crearEnlace(array,indice,puntoinicio,palabra,anadiroffset = false) {
-var offset = 0;
- if (anadiroffset) {
-  offset = borradofin.length + borradoinicio.length;
- }
-return array[indice].slice(0,puntoinicio)+
-borradoinicio+
+
+function crearEnlace(array,indice,puntoinicio,palabra) {
+console.log('array[indice]',array[indice],'pi',puntoinicio,'p',palabra,'bi',borradoinicio,'bf',borradofin)
+return array[indice].slice(0,puntoinicio+borradoinicio)+
 enlaceinicio+
-array[indice].slice(puntoinicio,puntoinicio+palabra.length-offset)+
+array[indice].slice(puntoinicio+borradoinicio,puntoinicio+palabra-borradofin)+
 enlacefin+
-borradofin+
-array[indice].slice(puntoinicio+palabra.length-offset,array[indice].length);;
+array[indice].slice(puntoinicio+palabra-borradofin);
 }
 function Enlazar(Columna,Fila,array,indice,cuenta,ope1,ope2,ope3,ope4,inicio,final,ignorarinicio,ignorarfin) {
  if (Columna) {
@@ -269,8 +277,7 @@ function Enlazar(Columna,Fila,array,indice,cuenta,ope1,ope2,ope3,ope4,inicio,fin
   if(cuenta % ope1 == ope2) {
    borradoInicioE(array,indice,array[indice],0);
    borradoFinE(array,indice,array[indice],0);
-   array[indice] = crearEnlace(array,indice,0,array[indice]);
-//borradoinicio + inicio + String(array[indice]) + final + borradofin;
+   array[indice] = crearEnlace(array,indice,0,array[indice].length);
   }
  }
  if (Fila) {
@@ -278,32 +285,35 @@ function Enlazar(Columna,Fila,array,indice,cuenta,ope1,ope2,ope3,ope4,inicio,fin
    borradoInicioE(array,indice,array[indice],0);
    borradoFinE(array,indice,array[indice],0);
    if (String(array[indice]).slice(0,inicio.length) != inicio) {
-    array[indice] = array[indice] = crearEnlace(array,indice,0,array[indice]);
-//borradoinicio + inicio + String(array[indice]) + final + borradofin;
+    array[indice] = crearEnlace(array,indice,0,array[indice].length);
    }
-/*
-   else {
-    array[indice] = borradoinicio + String(array[indice]) + borradofin;
-   }
-*/
   }
  }
 }
 
 function borradoInicioE(array,indice,palabra,puntoinicio) {
-borradoinicio = '';
- while (array[indice].slice(puntoinicio,puntoinicio+1) == ignorarinicioenlace) {
-  borradoinicio = borradoinicio + array[indice].slice(puntoinicio,puntoinicio+1);
-array[indice] = array[indice].slice(0,puntoinicio) + array[indice].slice(puntoinicio+1,array[indice].length)
+borradoinicio = 0;
+var arin = array[indice].slice(puntoinicio,puntoinicio+palabra.length);
+ while (arin.charAt(0) == ignorarinicioenlace) {
+  borradoinicio++;
+  arin = arin.slice(1);
+  if (borradoinicio > 8) {
+console.log(arin,'inimal');
+break
+}
  }
 }
 
 function borradoFinE(array,indice,palabra,puntoinicio) {
-borradofin = '', arind = String(array[indice]);
- while (array[indice].slice(puntoinicio+palabra.length-1,puntoinicio+palabra.length) == ignorarfinenlace) {
-  borradofin = borradofin + array[indice].slice(puntoinicio+palabra.length-1,puntoinicio+palabra.length);
-array[indice] = array[indice].slice(0,puntoinicio) + array[indice].slice(puntoinicio,puntoinicio+palabra.length-1) + array[indice].slice(puntoinicio+palabra.length);
-  palabra=palabra.slice(0,-1);
+borradofin = 0;
+var arin = array[indice].slice(puntoinicio,puntoinicio+palabra.length);
+ while (arin.charAt(arin.length-1) == ignorarfinenlace) {
+  borradofin++;
+  arin = arin.slice(0,-1);
+  if (borradofin > 8) {
+console.log(arin,'finmal');
+break
+}
  }
 }
 
