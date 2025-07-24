@@ -17,13 +17,22 @@
 </svg>
 </button>
 <FORM NAME="tableproperties" style="margin-bottom:30px;">
+<details>
+<summary>
+Opciones avanzadas
+</summary>
+<div class="container">
+<label for="separadorc" style="grid-area:g;">Carácter de separación para todos los campos separados por comas</label>
+<INPUT class="oscuro" type="text" name="reemplazocomas" style="grid-area:a;" placeholder="," id="separadorc">
+</div>
+</details>
 <div class="container">
 <INPUT class="oscuro" TYPE="button" VALUE="Crear tabla por filas" style="grid-area:g;cursor:pointer;" onClick="definirvariables()">
 <INPUT class="oscuro" TYPE="button" VALUE="Crear tabla por columnas" style="grid-area:h;cursor:pointer;" onClick="definirvariables(true)">
 <label for="widthform" style="grid-area:a;">Longitud</label>
 <label for="heigthform" style="grid-area:c;">Altura</label>
 <br>
-<INPUT class="oscuro" type="text" name="width" style="grid-area:d;" placeholder="2" id="widthform">
+<INPUT class="oscuro" type="text" inputmode="numeric" name="width" style="grid-area:d;" placeholder="2" id="widthform">
 <svg id="girartabla" class="girar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
 
 <path d="M1.539,8.001 C2.367,8.001 2.918,7.45 2.918,6.622 L2.914,6.187 C2.914,6.187 2.709,4.954 4.354,4.954 L11.015,5 L11.015,6.759 C11.338,7.081 11.862,7.081 12.185,6.759 L14.758,4.187 C15.08,3.863 15.08,3.339 14.758,3.017 L12.185,0.292 C11.862,-0.03 11.338,-0.03 11.015,0.292 L11.015,2.137 C10.854,2.09 4.562,2.063 4.562,2.063 C0.851,2.063 0.039,4.492 0.039,5.47 L0.039,6.501 C0.039,7.329 0.711,8.001 1.539,8.001 L1.539,8.001 Z">
@@ -31,16 +40,16 @@
 <path d="M13.5,8.042 C12.672,8.042 12,8.626 12,9.454 L12.002,10.411 C11.957,10.768 11.357,11.001 10.477,11.001 L3.938,11.001 L3.936,9.442 C3.614,9.12 3.09,9.12 2.766,9.442 L0.194,12.014 C-0.128,12.338 -0.128,12.862 0.194,13.184 L2.766,15.756 C3.09,16.08 3.614,16.08 3.936,15.756 L3.938,13.905 L10.477,13.905 C14.188,13.905 15,11.463 15,10.484 L15,9.453 C15,8.626 14.328,8.042 13.5,8.042 L13.5,8.042 Z">
 </path>
 </svg>
-<INPUT class="oscuro" type="text" name="height" style="grid-area:f;" placeholder="3" id="heigthform">
+<INPUT class="oscuro" type="text" inputmode="numeric" name="height" style="grid-area:f;" placeholder="3" id="heigthform">
 </div>
 <details>
-<summary style="margin:20px 0px;cursor:pointer;">
+<summary>
 Opciones de enlaces
 </summary>
 <div class="container">
 <label for="enlazarcol" style="grid-area:a;">Columna a enlazar</label>
 <label for="enlazarfil" style="grid-area:c;">Fila a enlazar</label>
-<INPUT class="oscuro" type="text" name="columna a enlazar" style="grid-area:d;" placeholder="Pensado para FeatherWiki" id="enlazarcol">
+<INPUT class="oscuro" type="text" inputmode="numeric" name="columna a enlazar" style="grid-area:d;" placeholder="Pensado para FeatherWiki" id="enlazarcol">
 <svg id="girarenlaces" class="girar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
 
 <path d="M1.539,8.001 C2.367,8.001 2.918,7.45 2.918,6.622 L2.914,6.187 C2.914,6.187 2.709,4.954 4.354,4.954 L11.015,5 L11.015,6.759 C11.338,7.081 11.862,7.081 12.185,6.759 L14.758,4.187 C15.08,3.863 15.08,3.339 14.758,3.017 L12.185,0.292 C11.862,-0.03 11.338,-0.03 11.015,0.292 L11.015,2.137 C10.854,2.09 4.562,2.063 4.562,2.063 C0.851,2.063 0.039,4.492 0.039,5.47 L0.039,6.501 C0.039,7.329 0.711,8.001 1.539,8.001 L1.539,8.001 Z">
@@ -48,7 +57,7 @@ Opciones de enlaces
 <path d="M13.5,8.042 C12.672,8.042 12,8.626 12,9.454 L12.002,10.411 C11.957,10.768 11.357,11.001 10.477,11.001 L3.938,11.001 L3.936,9.442 C3.614,9.12 3.09,9.12 2.766,9.442 L0.194,12.014 C-0.128,12.338 -0.128,12.862 0.194,13.184 L2.766,15.756 C3.09,16.08 3.614,16.08 3.936,15.756 L3.938,13.905 L10.477,13.905 C14.188,13.905 15,11.463 15,10.484 L15,9.453 C15,8.626 14.328,8.042 13.5,8.042 L13.5,8.042 Z">
 </path>
 </svg>
-<INPUT class="oscuro" type="text" name="fila a enlazar" style="grid-area:f;" placeholder="Pensado para FeatherWiki" id="enlazarfil">
+<INPUT class="oscuro" type="text" inputmode="numeric" name="fila a enlazar" style="grid-area:f;" placeholder="Pensado para FeatherWiki" id="enlazarfil">
 <label for="enlaceinicio" style="grid-area:j;">Inicio del enlace</label>
 <label for="enlacefin" style="grid-area:l;">Fin del enlace</label>
 <INPUT class="oscuro" type="text" name="Inicio enlace" style="grid-area:m;" placeholder="[[" id="enlaceinicio">
