@@ -1,50 +1,15 @@
-var conteo, conteolog, conteoencabezado = 0, conteodark = 0, borradoinicio, borradofin, modocolumna, enlazarfilm1xw, enlazarfilxw;
-var listaceldas, widthform, heightform, enlazarcol, enlazarfil, separacion, borrarr, textotabla, enlaceporcol, enlaceporfila, enlaceinicio, enlacefin, ignorarinicioenlace, ignorarfinenlace, enlazarpalabras;
+var conteo, conteolog, conteoencabezado = 0, conteodark = 0, borradoinicio, borradofin, modocolumna, enlazarfilm1xw, enlazarfilxw, sensitivity, caseS = false, accent = false;
+var listaceldas, widthform, heightform, enlazarcol, enlazarfil, borrarr, textotabla, enlaceporcol, enlaceporfila, enlaceinicio, enlacefin, ignorarinicioenlace, ignorarfinenlace, enlazarpalabras, separadorc;
 var tabla, thead, tbody, trh, trb, td, th, div;
+
+//Definiciónes
 
 document.addEventListener("DOMContentLoaded", (event) => {
 // Page has loaded
 document.querySelector("#textoarray").placeholder = document.querySelector("#textoarray").placeholder.replaceAll('\\n', '\n')
+eventlisteners();
 definirvariables(false);
-const dark = document.getElementById("darkmode");
- dark.addEventListener("mouseup", () => {
-  darkchange();
-  });
-const giro = document.getElementById("girartabla");
- giro.addEventListener("mouseup", () => {
-  girar(document.getElementById('widthform'), document.getElementById('heigthform'));
- });
-const giro2 = document.getElementById("girarenlaces");
- giro2.addEventListener("mouseup", () => {
-  girar(document.getElementById('enlazarcol'), document.getElementById('enlazarfil'));
- });
 });
-
-function girar(el1,el2,el3) {
-el3 = vloph(el2);
-el2.value = vloph(el1);
-el1.value = el3;
-}
-
-function darkchange(conversion, boton) {
-boton = document.querySelector("#darkmode > svg > path");
- if (conteodark == 0) {
-  conversion = document.querySelectorAll('.oscuro');
-   conversion.forEach(elementoactual => {
-    elementoactual.className = 'claro';
-   });
-  boton.setAttribute('d',imgcla);
-  conteodark++;
- }
- else {
-  conversion = document.querySelectorAll('.claro');
-  conversion.forEach(elementoactual => {
-  elementoactual.className = 'oscuro';
-  });
-  boton.setAttribute('d',imgdrk);
-  conteodark = 0;
- }
-}
 
 function definirvariables(col = false) {
  if (col) {
@@ -56,10 +21,12 @@ function definirvariables(col = false) {
 if (document.querySelector('table') !== null ) {
 document.querySelector('table').remove();
 }
+sensitivity = []
 tabla = document.createElement('table');
 thead = document.createElement('thead');
 tbody = document.createElement('tbody');
 trh = document.createElement('tr');
+separadorc = vloph('separadorc');
 widthform = Number(vloph('widthform'));
 heightform = Number(vloph('heigthform'));
 enlazarcol = Number(vloph('enlazarcol'))-1;
@@ -68,8 +35,8 @@ enlaceinicio = vloph('enlaceinicio');
 enlacefin = vloph('enlacefin');
 ignorarinicioenlace = vloph('ignorarinicioenlace');
 ignorarfinenlace = vloph('ignorarfinenlace');
-enlazarpalabras = vloph('enlazarpalabras').split(',');
-borrarr = vloph('borrar').split(',');
+enlazarpalabras = vloph('enlazarpalabras').split(separadorc);
+borrarr = vloph('borrar').split(separadorc);
 alineamiento = vloph('alineamiento');
 textotabla = document.getElementById('textotabla');
 determinarenlace();
@@ -78,90 +45,7 @@ tomartexto();
 creartabla();
 }
 
-function tomartexto(conteo) {
-conteo = 0;
-separacion = vloph('separacion');
- if (separacion == '\\n') {
-  separacion='\n'
- }
-listaceldas = vloph('textoarray').split(separacion);
- listaceldas.forEach(ele => {
-  listaceldas[conteo] = listaceldas[conteo].replaceAll('\n', '');
-  conteo++;
- });
- while (listaceldas.length < widthform * heightform) {
-console.log('añadirrelleno')
-  listaceldas.push('')
- }
-}
-
-function aplanarpalabras() {
-var conteopal = 0;
-  enlazarpalabras.forEach(palabra => {
-  enlazarpalabras[conteopal] = aplanartexto(palabra);
-  conteopal++;
- });
-}
-
-function determinarenlace() {
- if (isNaN(enlazarfil)) {
-  enlaceporfila = false;
- }
- else {
-  enlaceporfila = true;
- }
- if (isNaN(enlazarcol)) {
-  enlaceporcol = false;
- }
- else {
-  enlaceporcol = true;
- }
-}
-
-function aplanartexto(TextoaAplanar, Textoaplanado = TextoaAplanar) {
-//thanks for this code to Niall Maher (https://www.codu.co/articles/remove-accents-from-a-javascript-string-skgp1inb)
-Textoaplanado = TextoaAplanar.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-Textoaplanado = Textoaplanado.toLowerCase();
-return Textoaplanado;
-}
-
-function enlazarPalabras(indice = conteo, array = listaceldas, listapalabras = enlazarpalabras) {
-arin = aplanartexto(array[indice]);
- listapalabras.forEach(palabra => {
- var indexOfFirst = 0, offset = enlaceinicio.length, conteoinfinito = 0;
-   while (indexOfFirst != -1 && palabra != '') {
-    indexOfFirst = arin.indexOf(palabra, indexOfFirst);
-     if (indexOfFirst == -1) {
-      break;
-     }
-     else {
-      borradoInicioE(array,indice,palabra,indexOfFirst);
-      borradoFinE(array,indice,palabra,indexOfFirst);
-      array[indice] = crearEnlace(array,indice,indexOfFirst,palabra.length);
-      arin = aplanartexto(array[indice]);
-     }
-    indexOfFirst = indexOfFirst + palabra.length + offset +1;
-    conteoinfinito++;
-    if (conteoinfinito > 1500) {
-     document.querySelector("summary").innerText = 'infinite loop (more than 1500 iterations)';
-     document.querySelector("summary").style = 'font-size: 25px;';
-     break;
-    }
-   }
- });
-}
-
-
-function vloph(campoDeTexto) {
-campoDeTexto = document.getElementById(campoDeTexto);
- if (campoDeTexto.value == '') {
-  return campoDeTexto.placeholder;
- }
- else {
-  return campoDeTexto.value;
- }
-}
-
+//Sección de tablas
 
 function creartabla() {
 // gracias a mozilla por el concepto general
@@ -189,22 +73,11 @@ tabla.appendChild(thead);
 tabla.appendChild(tbody);
 document.body.appendChild(tabla);
 agregarceldas();
-document.body.appendChild(creditos);
-}
-
-
-function borrar(textorevisar, arrayrevisar = borrarr) {
-if (arrayrevisar.indexOf(textorevisar) != -1 && arrayrevisar[arrayrevisar.indexOf(textorevisar)].length > 0) {
-  return true;
-}
-else {
-  return false;
-}
+document.body.appendChild(linkbox);
 }
 
 function agregarceldas() {
 var sumaaltura = 0, rsaltura = -1, conteoarray = 0, conteodiv = 0;
-
 listaceldas.forEach(elemento => {
   while (borrar(listaceldas[conteoarray].charAt(0))) {
     listaceldas[conteoarray] = String(listaceldas[conteoarray]).slice(1,listaceldas[conteoarray].length)
@@ -263,6 +136,22 @@ textotabla.style = 'width:400px;height:250px;';
 console.log('Busqueda realizada en',divs.length,'Divs. Agregadas',conteolog,'celdas de',listaceldas.length,'disponibles');
 }
 
+function quitarencabezado() {
+ if (conteoencabezado == 0) {
+  textotabla.value = textotabla.value.replaceAll('\n<tbody>', '').replaceAll('\n<thead>', '\n<tbody>').replaceAll('\n</thead>', '').replaceAll('<th>', '<td>').replaceAll('</th>', '</td>');
+  document.querySelector('table').outerHTML = textotabla.value;
+  conteoencabezado++;
+  document.querySelector("#encabezado").value = 'Añadir Encabezado'
+ }
+ else {
+  document.querySelector("#encabezado").value = 'Quitar Encabezado'
+  definirvariables(false);
+  conteoencabezado = 0;
+ }
+}
+
+//Seccion de enlaces
+
 function crearEnlace(array,indice,puntoinicio,palabra) {
 console.log('array[indice]',array[indice],'pi',puntoinicio,'p',palabra,'bi',borradoinicio,'bf',borradofin)
 return array[indice].slice(0,puntoinicio+borradoinicio)+
@@ -317,23 +206,208 @@ break
  }
 }
 
-function quitarencabezado() {
- if (conteoencabezado == 0) {
-  textotabla.value = textotabla.value.replaceAll('\n<tbody>', '').replaceAll('\n<thead>', '\n<tbody>').replaceAll('\n</thead>', '').replaceAll('<th>', '<td>').replaceAll('</th>', '</td>');
-  document.querySelector('table').outerHTML = textotabla.value;
-  conteoencabezado++;
-  document.querySelector("#encabezado").value = 'Añadir Encabezado'
+function determinarenlace() {
+ if (isNaN(enlazarfil)) {
+  enlaceporfila = false;
  }
  else {
-  document.querySelector("#encabezado").value = 'Quitar Encabezado'
-  definirvariables(false);
-  conteoencabezado = 0;
+  enlaceporfila = true;
+ }
+ if (isNaN(enlazarcol)) {
+  enlaceporcol = false;
+ }
+ else {
+  enlaceporcol = true;
  }
 }
+
+function aplanarpalabras() {
+var conteopal = 0;
+  enlazarpalabras.forEach(palabra => {
+  var cini = palabra.indexOf('['), cfin = palabra.indexOf(']');
+  caseS = false, accent = false;
+  if (cini != -1 && cfin != -1) {
+   var corchetes = palabra.slice(cini,cfin+1);
+   sensitivity.push(corchetes);
+   determinarSensibilidad(corchetes);
+  }
+  else {
+   sensitivity.push('[]');
+   cini = palabra.length;
+  }
+  enlazarpalabras[conteopal] = aplanartexto(palabra, caseS, accent);
+  var temp = enlazarpalabras[conteopal].slice(0,cini);
+  if (temp.charAt(temp.length-1) == ' ') {
+   enlazarpalabras[conteopal] = temp.slice(0,-1);
+  }
+  else {
+   enlazarpalabras[conteopal] = temp;
+  }
+  conteopal++;
+ });
+}
+
+function enlazarPalabras(indice = conteo, array = listaceldas, listapalabras = enlazarpalabras) {
+var conteo = 0; 
+listapalabras.forEach(palabra => {
+ caseS = false, accent = false;
+ determinarSensibilidad(sensitivity[conteo]);
+ arin = aplanartexto(array[indice], caseS, accent);
+ conteo++
+ var indexOfFirst = 0, offset = enlaceinicio.length, conteoinfinito = 0;
+   while (indexOfFirst != -1 && palabra != '') {
+    indexOfFirst = arin.indexOf(palabra, indexOfFirst);
+     if (indexOfFirst == -1) {
+      break;
+     }
+     else {
+      borradoInicioE(array,indice,palabra,indexOfFirst);
+      borradoFinE(array,indice,palabra,indexOfFirst);
+      array[indice] = crearEnlace(array,indice,indexOfFirst,palabra.length);
+      arin = aplanartexto(array[indice]);
+     }
+    indexOfFirst = indexOfFirst + palabra.length + offset +1;
+    conteoinfinito++;
+    if (conteoinfinito > 1500) {
+     document.querySelector("summary").innerText = 'infinite loop (more than 1500 iterations)';
+     document.querySelector("summary").style = 'font-size: 25px;';
+     break;
+    }
+   }
+ });
+}
+
+//Sección de Manipulación HTML
+
+function eventlisteners() {
+const dark = document.getElementById("darkmode");
+ dark.addEventListener("mouseup", () => {
+  darkchange();
+  });
+const giro = document.getElementById("girartabla");
+ giro.addEventListener("mouseup", () => {
+  girar(document.getElementById('widthform'), document.getElementById('heigthform'));
+ });
+const giro2 = document.getElementById("girarenlaces");
+ giro2.addEventListener("mouseup", () => {
+  girar(document.getElementById('enlazarcol'), document.getElementById('enlazarfil'));
+ });
+const sepac = document.getElementById("separadorc");
+ sepac.addEventListener("keyup", () => {
+  separadorc = vloph('separadorc');
+  document.querySelector('label[for="borrar"]').textContent = cambiaretiqueta('o', 'Caracteres a borrar del inicio')
+  document.querySelector('label[for="enlazarpalabras"]').textContent = cambiaretiqueta('a', 'Palabras a enlazar')
+ });
+}
+
+function cambiaretiqueta(ao, inicio) {
+return `${inicio} (separad${ao}s por "${separadorc}")`
+}
+
+function girar(el1,el2,el3) {
+el3 = vloph(el2);
+el2.value = vloph(el1);
+el1.value = el3;
+}
+
+function darkchange(conversion, boton) {
+boton = document.querySelector("#darkmode > svg > path");
+ if (conteodark == 0) {
+  conversion = document.querySelectorAll('.oscuro');
+   conversion.forEach(elementoactual => {
+    elementoactual.className = 'claro';
+   });
+  boton.setAttribute('d',imgcla);
+  conteodark++;
+ }
+ else {
+  conversion = document.querySelectorAll('.claro');
+  conversion.forEach(elementoactual => {
+  elementoactual.className = 'oscuro';
+  });
+  boton.setAttribute('d',imgdrk);
+  conteodark = 0;
+ }
+}
+
+function tomartexto(conteo) {
+conteo = 0;
+var separacion = vloph('separacion');
+ if (separacion == '\\n') {
+  separacion='\n'
+ }
+listaceldas = vloph('textoarray').split(separacion);
+ listaceldas.forEach(ele => {
+  listaceldas[conteo] = listaceldas[conteo].replaceAll('\n', '');
+  conteo++;
+ });
+ while (listaceldas.length < widthform * heightform) {
+console.log('añadirrelleno')
+  listaceldas.push('')
+ }
+}
+function determinarSensibilidad(corchetesS){
+ if (corchetesS.indexOf('s') != -1) {
+  caseS = true;
+ }
+ if (corchetesS.indexOf('a') != -1) {
+  accent = true;
+ }
+}
+
+function vloph(campoDeTexto) {
+ //checks if the parameter is an html element if not get the element by that id 
+ if (campoDeTexto instanceof HTMLElement != true) {
+  campoDeTexto = document.getElementById(campoDeTexto);
+ }
+ if (campoDeTexto !== null) {
+  if (campoDeTexto.value == '') {
+   return campoDeTexto.placeholder;
+  }
+  else {
+   return campoDeTexto.value;
+  }
+ }
+}
+
+//Sección de manipulación de texto
+
+function borrar(textorevisar, arrayrevisar = borrarr) {
+ if (arrayrevisar.indexOf(textorevisar) != -1 && arrayrevisar[arrayrevisar.indexOf(textorevisar)].length > 0) {
+  return true;
+ }
+ else {
+  return false;
+ }
+}
+
+function aplanartexto(TextoaAplanar, caseS = false, accent = false, Textoaplanado = TextoaAplanar) {
+//thanks for this code to Niall Maher (https://www.codu.co/articles/remove-accents-from-a-javascript-string-skgp1inb)
+ if (!accent) {
+  Textoaplanado = TextoaAplanar.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+ }
+ if (!caseS) {
+  Textoaplanado = Textoaplanado.toLowerCase();
+ }
+return Textoaplanado;
+}
+const linkbox = document.createElement('div');
+linkbox.className = 'container';
+linkbox.style = "display:inline-block"
 const creditos = document.createElement('a');
 creditos.innerText = 'Creditos';
 creditos.href = 'creditos.html';
 creditos.className = 'oscuro';
+linkbox.appendChild(creditos);
+const spaceial = document.createElement('p');
+spaceial.textContent='|';
+spaceial.style="margin: 0 0.5em;font-size:20px;display:inline-block;"
+linkbox.appendChild(spaceial.cloneNode(true));
+const ejemplos = document.createElement('a');
+ejemplos.innerText = 'Ejemplos/Funcionalidades Extra';
+ejemplos.href = 'ejemplos.html';
+ejemplos.className = 'oscuro';
+linkbox.appendChild(ejemplos);
 const imgcla = "M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z";
 const imgdrk = "M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z";
 listaceldas = [];
