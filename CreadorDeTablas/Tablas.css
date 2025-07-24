@@ -17,7 +17,13 @@ a.claro:visited {
 a.oscuro:visited {
   color:#ff8ce9;
 }
-
+summary {
+margin: 20px 0;
+cursor: pointer;
+}
+details[open] {
+margin: 20px 0;
+}
 .girar {
   grid-area:e;
   margin:0px 10px;
