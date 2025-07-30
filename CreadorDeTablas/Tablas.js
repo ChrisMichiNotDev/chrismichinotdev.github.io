@@ -1,7 +1,7 @@
-var conteo, conteolog, conteoencabezado = 0, conteodark = 0, borradoinicio, borradofin, modocolumna, enlazarfilm1xw, enlazarfilxw, sensitivity, caseS = false, accent = false;
+var conteo, conteolog, conteoencabezado = 0, conteodark = 0, borradoinicio, borradofin, modocolumna, enlazarfilm1xw, enlazarfilxw, sensitivity, caseS = false, accent = false, tablaconencabezado, tablasinencabezado;
 var listaceldas, widthform, heightform, enlazarcol, enlazarfil, borrarr, textotabla, enlaceporcol, enlaceporfila, enlaceinicio, enlacefin, ignorarinicioenlace, ignorarfinenlace, enlazarpalabras, separadorc;
-var tabla, thead, tbody, trh, trb, td, th, div;
-
+var tabla, thead, tbody, trh, trb, td, th, div, divc;
+var ejecutaragregarenlaces, ejecutarenlazarpalabras;
 //Definiciónes
 
 document.addEventListener("DOMContentLoaded", (event) => {
@@ -12,6 +12,7 @@ definirvariables(false);
 });
 
 function definirvariables(col = false) {
+console.time('click');
  if (col) {
   modocolumna = true
  }
@@ -22,10 +23,6 @@ if (document.querySelector('table') !== null ) {
 document.querySelector('table').remove();
 }
 sensitivity = []
-tabla = document.createElement('table');
-thead = document.createElement('thead');
-tbody = document.createElement('tbody');
-trh = document.createElement('tr');
 separadorc = vloph('separadorc');
 widthform = Number(vloph('widthform'));
 heightform = Number(vloph('heigthform'));
@@ -40,7 +37,13 @@ borrarr = vloph('borrar').split(separadorc);
 alineamiento = vloph('alineamiento');
 textotabla = document.getElementById('textotabla');
 determinarenlace();
-aplanarpalabras();
+ if (enlazarpalabras.length == 1 && enlazarpalabras[0] == '') {
+  ejecutarenlazarpalabras = false;
+ }
+ else {
+  ejecutarenlazarpalabras = true;
+  aplanarpalabras();
+ }
 tomartexto();
 creartabla();
 }
@@ -48,32 +51,33 @@ creartabla();
 //Sección de tablas
 
 function creartabla() {
-// gracias a mozilla por el concepto general
-//(https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Traversing_an_HTML_table_with_JavaScript_and_DOM_Interfaces)
-//Crear encabezado
+tabla = document.createElement('table');
+thead = document.createElement('thead');
+tbody = document.createElement('tbody');
+trh = document.createElement('tr');
+//Crear celdas
+th = document.createElement('th');
+div = document.createElement('div');
+th.appendChild(div);
+trb = document.createElement('tr');
+td = document.createElement('td');
+divc = document.createElement('div');
+td.appendChild(divc);
  for (var conteodivenc = 0; conteodivenc < widthform; conteodivenc++) {
-  th = document.createElement('th');
-  div = document.createElement('div');
-  th.appendChild(div);
-  trh.appendChild(th);
+  trh.appendChild(th.cloneNode(true));
+  trb.appendChild(td.cloneNode(true));
  }
+//Crear tabla
 thead.appendChild(trh);
-//crear cuerpo
  for (var conteotrcue = 0; conteotrcue < heightform-1; conteotrcue++) {
-  trb = document.createElement('tr');
-  for (var conteotd = 0; conteotd < widthform; conteotd++) {
-   td = document.createElement('td');
-   div = document.createElement('div');
-   td.appendChild(div);
-   trb.appendChild(td);
-  }
-  tbody.appendChild(trb);
+  tbody.appendChild(trb.cloneNode(true));
  }
 tabla.appendChild(thead);
 tabla.appendChild(tbody);
 document.body.appendChild(tabla);
 agregarceldas();
 document.body.appendChild(linkbox);
+console.timeEnd('click');
 }
 
 function agregarceldas() {
@@ -91,8 +95,12 @@ enlazarfilxw = enlazarfil * widthform;
 const divs = document.querySelectorAll('div:not(.container)');
  if (!modocolumna) {
   divs.forEach(element => {
-   Enlazar(enlaceporcol,enlaceporfila,listaceldas,conteo,conteolog,widthform,enlazarcol,enlazarfilm1xw,enlazarfilxw,enlaceinicio,enlacefin);
-   enlazarPalabras();
+   if (ejecutaragregarenlaces) {
+    Enlazar(enlaceporcol,enlaceporfila,listaceldas,conteo,conteolog,widthform,enlazarcol,enlazarfilm1xw,enlazarfilxw,enlaceinicio,enlacefin);
+   }
+   if (ejecutarenlazarpalabras) {
+    enlazarPalabras();
+   }
    if (alineamiento != 'Nada') {
     element.style = `text-align: ${alineamiento};`;
    }
@@ -106,13 +114,21 @@ const divs = document.querySelectorAll('div:not(.container)');
   divs.forEach(element => {
    if (conteodiv != 0) {
     conteocol = conteo+sumaaltura+rsaltura;
-    Enlazar(enlaceporcol,enlaceporfila,listaceldas,conteocol,conteolog,widthform,enlazarcol,enlazarfilm1xw,enlazarfilxw,enlaceinicio,enlacefin);
-    enlazarPalabras(conteocol);
+    if (ejecutaragregarenlaces) {
+     Enlazar(enlaceporcol,enlaceporfila,listaceldas,conteocol,conteolog,widthform,enlazarcol,enlazarfilm1xw,enlazarfilxw,enlaceinicio,enlacefin);
+    }
+    if (ejecutarenlazarpalabras) {
+     enlazarPalabras(conteocol);
+    }
     celda = listaceldas[conteocol];
    }
    else if (conteodiv == 0) {
-    Enlazar(enlaceporcol,enlaceporfila,listaceldas,conteo,conteolog,widthform,enlazarcol,enlazarfilm1xw,enlazarfilxw,enlaceinicio,enlacefin);
-    enlazarPalabras();
+    if (ejecutaragregarenlaces) {
+     Enlazar(enlaceporcol,enlaceporfila,listaceldas,conteo,conteolog,widthform,enlazarcol,enlazarfilm1xw,enlazarfilxw,enlaceinicio,enlacefin);
+    }
+    if (ejecutarenlazarpalabras) {
+     enlazarPalabras();
+    }
     celda = listaceldas[conteo];
     rsaltura++;
    }
@@ -133,27 +149,40 @@ const divs = document.querySelectorAll('div:not(.container)');
  }
 textotabla.value = document.querySelector('table').outerHTML.replaceAll('>', '>\n').replaceAll('</div>', '\n</div>');
 textotabla.style = 'width:400px;height:250px;';
+conteoencabezado = 0;
 console.log('Busqueda realizada en',divs.length,'Divs. Agregadas',conteolog,'celdas de',listaceldas.length,'disponibles');
+tablaconencabezado = '';
+tablasinencabezado = '';
 }
 
 function quitarencabezado() {
  if (conteoencabezado == 0) {
-  textotabla.value = textotabla.value.replaceAll('\n<tbody>', '').replaceAll('\n<thead>', '\n<tbody>').replaceAll('\n</thead>', '').replaceAll('<th>', '<td>').replaceAll('</th>', '</td>');
-  document.querySelector('table').outerHTML = textotabla.value;
+  if (tablaconencabezado == '') {
+   tablaconencabezado = textotabla.value;
+   textotabla.value = textotabla.value.replaceAll('\n<tbody>', '').replaceAll('\n<thead>', '\n<tbody>').replaceAll('\n</thead>', '').replaceAll('<th>', '<td>').replaceAll('</th>', '</td>');
+   tablasinencabezado = textotabla.value
+  }
+  else {
+   textotabla.value = tablasinencabezado;
+  }
+  document.querySelector("#encabezado").value = 'Añadir Encabezado';
   conteoencabezado++;
-  document.querySelector("#encabezado").value = 'Añadir Encabezado'
  }
  else {
   document.querySelector("#encabezado").value = 'Quitar Encabezado'
-  definirvariables(false);
+  textotabla.value = tablaconencabezado;
   conteoencabezado = 0;
  }
+document.querySelector('table').outerHTML = textotabla.value;
 }
 
 //Seccion de enlaces
 
 function crearEnlace(array,indice,puntoinicio,palabra) {
+/*
+Log util para ver el funcionamiento de los enlaces
 console.log('array[indice]',array[indice],'pi',puntoinicio,'p',palabra,'bi',borradoinicio,'bf',borradofin)
+*/
 return array[indice].slice(0,puntoinicio+borradoinicio)+
 enlaceinicio+
 array[indice].slice(puntoinicio+borradoinicio,puntoinicio+palabra-borradofin)+
@@ -219,6 +248,12 @@ function determinarenlace() {
  else {
   enlaceporcol = true;
  }
+ if (enlaceporfila || enlaceporcol) {
+  ejecutaragregarenlaces = true;
+ }
+ else {
+  ejecutaragregarenlaces = false;
+ }
 }
 
 function aplanarpalabras() {
@@ -253,7 +288,7 @@ listapalabras.forEach(palabra => {
  caseS = false, accent = false;
  determinarSensibilidad(sensitivity[conteo]);
  arin = aplanartexto(array[indice], caseS, accent);
- conteo++
+ conteo++;
  var indexOfFirst = 0, offset = enlaceinicio.length, conteoinfinito = 0;
    while (indexOfFirst != -1 && palabra != '') {
     indexOfFirst = arin.indexOf(palabra, indexOfFirst);
@@ -341,9 +376,11 @@ listaceldas = vloph('textoarray').split(separacion);
   listaceldas[conteo] = listaceldas[conteo].replaceAll('\n', '');
   conteo++;
  });
- while (listaceldas.length < widthform * heightform) {
-console.log('añadirrelleno')
-  listaceldas.push('')
+ if (listaceldas.length < widthform * heightform) {  
+  var arlo = listaceldas.length;
+  listaceldas.length = widthform * heightform;
+  listaceldas.fill('',arlo,widthform * heightform);
+  console.log('añadir Relleno',widthform * heightform - arlo)
  }
 }
 function determinarSensibilidad(corchetesS){
@@ -382,8 +419,8 @@ function borrar(textorevisar, arrayrevisar = borrarr) {
 }
 
 function aplanartexto(TextoaAplanar, caseS = false, accent = false, Textoaplanado = TextoaAplanar) {
-//thanks for this code to Niall Maher (https://www.codu.co/articles/remove-accents-from-a-javascript-string-skgp1inb)
  if (!accent) {
+//thanks for this code to Niall Maher (https://www.codu.co/articles/remove-accents-from-a-javascript-string-skgp1inb)
   Textoaplanado = TextoaAplanar.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
  }
  if (!caseS) {
@@ -394,20 +431,26 @@ return Textoaplanado;
 const linkbox = document.createElement('div');
 linkbox.className = 'container';
 linkbox.style = "display:inline-block"
+
 const creditos = document.createElement('a');
 creditos.innerText = 'Creditos';
 creditos.href = 'creditos.html';
 creditos.className = 'oscuro';
 linkbox.appendChild(creditos);
+
 const spaceial = document.createElement('p');
 spaceial.textContent='|';
 spaceial.style="margin: 0 0.5em;font-size:20px;display:inline-block;"
 linkbox.appendChild(spaceial.cloneNode(true));
+
 const ejemplos = document.createElement('a');
 ejemplos.innerText = 'Ejemplos/Funcionalidades Extra';
 ejemplos.href = 'ejemplos.html';
 ejemplos.className = 'oscuro';
 linkbox.appendChild(ejemplos);
+
 const imgcla = "M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z";
+
 const imgdrk = "M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z";
+
 listaceldas = [];
