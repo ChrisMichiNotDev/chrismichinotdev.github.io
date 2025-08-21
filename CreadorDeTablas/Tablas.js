@@ -1,5 +1,5 @@
-var conteo, conteolog, conteoencabezado = 0, conteodark = 0, borradoinicio, borradofin, modocolumna, enlazarfilm1xw, enlazarfilxw, sensitivity, caseS = false, accent = false, tablaconencabezado, tablasinencabezado;
-var listaceldas, widthform, heightform, enlazarcol, enlazarfil, borrarr, textotabla, enlaceporcol, enlaceporfila, enlaceinicio, enlacefin, ignorarinicioenlace, ignorarfinenlace, enlazarpalabras, separadorc;
+var conteo, conteolog, conteoencabezado = 0, conteodark = 0, borradoinicio, borradofin, modocolumna, enlazarFilaLimiteInferior, enlazarFilaLimiteSuperior, sensitivity, caseS = false, accent = false, tablaconencabezado, tablasinencabezado;
+var listaceldas, widthform, heightform, columnaEnlazada, filaEnlazada, borrarr, textotabla, enlazarColumna, enlazarFila, enlaceinicio, enlacefin, ignorarinicioenlace, ignorarfinenlace, enlazarpalabras, separadorc, atributeNameDivider, atributesDivider;
 var tabla, thead, tbody, trh, trb, td, th, div, divc;
 var ejecutaragregarenlaces, ejecutarenlazarpalabras;
 //Definiciónes
@@ -12,7 +12,6 @@ definirvariables(false);
 });
 
 function definirvariables(col = false) {
-console.time('click');
  if (col) {
   modocolumna = true
  }
@@ -26,8 +25,8 @@ sensitivity = []
 separadorc = vloph('separadorc');
 widthform = Number(vloph('widthform'));
 heightform = Number(vloph('heigthform'));
-enlazarcol = Number(vloph('enlazarcol'))-1;
-enlazarfil = Number(vloph('enlazarfil'));
+columnaEnlazada = Number(vloph('enlazarcol'))-1;
+filaEnlazada = Number(vloph('enlazarfil'));
 enlaceinicio = vloph('enlaceinicio');
 enlacefin = vloph('enlacefin');
 ignorarinicioenlace = vloph('ignorarinicioenlace');
@@ -35,6 +34,8 @@ ignorarfinenlace = vloph('ignorarfinenlace');
 enlazarpalabras = vloph('enlazarpalabras').split(separadorc);
 borrarr = vloph('borrar').split(separadorc);
 alineamiento = vloph('alineamiento');
+atributeNameDivider = vloph('separadorentreatributoynombre');
+atributesDivider = vloph('separadordeatributos');
 textotabla = document.getElementById('textotabla');
 determinarenlace();
  if (enlazarpalabras.length == 1 && enlazarpalabras[0] == '') {
@@ -75,34 +76,54 @@ thead.appendChild(trh);
 tabla.appendChild(thead);
 tabla.appendChild(tbody);
 document.body.appendChild(tabla);
+var atributostabla = vloph(tableatributes)
+atributostabla = atributostabla.split(atributesDivider);
+atributostabla.forEach(ele => {
+var atributo = ele.split(atributeNameDivider);
+if (atributo.length > 1) {
+ document.querySelector('table').setAttribute(atributo[0],atributo[1])
+}
+});
 agregarceldas();
 document.body.appendChild(linkbox);
-console.timeEnd('click');
 }
 
 function agregarceldas() {
-var sumaaltura = 0, rsaltura = -1, conteoarray = 0, conteodiv = 0;
+var sumaaltura = 0, rsaltura = -1, conteoarray = 0, conteodiv = 0, indiceAtributoCell, indiceAtributoText;
 listaceldas.forEach(elemento => {
   while (borrar(listaceldas[conteoarray].charAt(0))) {
-    listaceldas[conteoarray] = String(listaceldas[conteoarray]).slice(1,listaceldas[conteoarray].length)
+    listaceldas[conteoarray] = listaceldas[conteoarray].slice(1,listaceldas[conteoarray].length)
   }
   conteoarray++;
 });
 conteo = 0;
 conteolog = 0;
-enlazarfilm1xw = (enlazarfil-1) * widthform;
-enlazarfilxw = enlazarfil * widthform;
+enlazarFilaLimiteInferior = (filaEnlazada-1) * widthform;
+enlazarFilaLimiteSuperior = filaEnlazada * widthform;
 const divs = document.querySelectorAll('div:not(.container)');
  if (!modocolumna) {
   divs.forEach(element => {
+   indiceAtributoCell = listaceldas[conteo].indexOf('{cell');
+   if (indiceAtributoCell != -1) {
+    var indiceAtributoCellFin = listaceldas[conteo].indexOf('}', indiceAtributoCell)
+    agregarAtributos(element, conteo, indiceAtributoCell, indiceAtributoCellFin)
+    listaceldas[conteo] = listaceldas[conteo].slice('0',indiceAtributoCell) + listaceldas[conteo].slice(indiceAtributoCellFin+1)
+   }
+   indiceAtributoText = listaceldas[conteo].indexOf('{text');
+   if (indiceAtributoText != -1) {
+    var indiceAtributoTextFin = listaceldas[conteo].indexOf('}', indiceAtributoCell)
+    agregarAtributos(element, conteo, indiceAtributoText, indiceAtributoTextFin)
+    listaceldas[conteo] = listaceldas[conteo].slice('0',indiceAtributoText) + listaceldas[conteo].slice(indiceAtributoTextFin+1)
+   }
    if (ejecutaragregarenlaces) {
-    Enlazar(enlaceporcol,enlaceporfila,listaceldas,conteo,conteolog,widthform,enlazarcol,enlazarfilm1xw,enlazarfilxw,enlaceinicio,enlacefin);
+    Enlazar();
    }
    if (ejecutarenlazarpalabras) {
     enlazarPalabras();
    }
-   if (alineamiento != 'Nada') {
-    element.style = `text-align: ${alineamiento};`;
+   if (alineamiento != 'Nada' && element.style.textAlign == '') {
+    var align = `text-align: ${alineamiento};`, currentstyle = element.style.cssText;
+    element.style = currentstyle + align;
    }
    conteolog++;
    celda = listaceldas[conteo];
@@ -114,8 +135,20 @@ const divs = document.querySelectorAll('div:not(.container)');
   divs.forEach(element => {
    if (conteodiv != 0) {
     conteocol = conteo+sumaaltura+rsaltura;
+    indiceAtributoCell = listaceldas[conteocol].indexOf('{cell');
+    if (indiceAtributoCell != -1) {
+     var indiceAtributoCellFin = listaceldas[conteocol].indexOf('}', indiceAtributoCell)
+     agregarAtributos(element, conteocol, indiceAtributoCell, indiceAtributoCellFin)
+     listaceldas[conteocol] = listaceldas[conteocol].slice('0',indiceAtributoCell) + listaceldas[conteocol].slice(indiceAtributoCellFin+1)
+    }
+    indiceAtributoText = listaceldas[conteocol].indexOf('{text');
+    if (indiceAtributoText != -1) {
+     var indiceAtributoTextFin = listaceldas[conteocol].indexOf('}', indiceAtributoCell)
+     agregarAtributos(element, conteocol, indiceAtributoText, indiceAtributoTextFin)
+     listaceldas[conteocol] = listaceldas[conteocol].slice('0',indiceAtributoText) + listaceldas[conteocol].slice(indiceAtributoTextFin+1)
+    }
     if (ejecutaragregarenlaces) {
-     Enlazar(enlaceporcol,enlaceporfila,listaceldas,conteocol,conteolog,widthform,enlazarcol,enlazarfilm1xw,enlazarfilxw,enlaceinicio,enlacefin);
+     Enlazar(conteocol);
     }
     if (ejecutarenlazarpalabras) {
      enlazarPalabras(conteocol);
@@ -123,8 +156,20 @@ const divs = document.querySelectorAll('div:not(.container)');
     celda = listaceldas[conteocol];
    }
    else if (conteodiv == 0) {
+    indiceAtributoCell = listaceldas[conteo].indexOf('{cell');
+    if (indiceAtributoCell != -1) {
+     var indiceAtributoCellFin = listaceldas[conteo].indexOf('}', indiceAtributoCell)
+     agregarAtributos(element, conteo, indiceAtributoCell, indiceAtributoCellFin)
+     listaceldas[conteo] = listaceldas[conteo].slice('0',indiceAtributoCell) + listaceldas[conteo].slice(indiceAtributoCellFin+1)
+    }
+    indiceAtributoText = listaceldas[conteo].indexOf('{text');
+    if (indiceAtributoText != -1) {
+     var indiceAtributoTextFin = listaceldas[conteo].indexOf('}', indiceAtributoCell)
+     agregarAtributos(element, conteo, indiceAtributoText, indiceAtributoTextFin)
+     listaceldas[conteo] = listaceldas[conteo].slice('0',indiceAtributoText) + listaceldas[conteo].slice(indiceAtributoTextFin+1)
+    }
     if (ejecutaragregarenlaces) {
-     Enlazar(enlaceporcol,enlaceporfila,listaceldas,conteo,conteolog,widthform,enlazarcol,enlazarfilm1xw,enlazarfilxw,enlaceinicio,enlacefin);
+     Enlazar();
     }
     if (ejecutarenlazarpalabras) {
      enlazarPalabras();
@@ -132,8 +177,9 @@ const divs = document.querySelectorAll('div:not(.container)');
     celda = listaceldas[conteo];
     rsaltura++;
    }
-   if (alineamiento != 'Nada') {
-    element.style = `text-align: ${alineamiento};`;
+   if (alineamiento != 'Nada' && element.style.textAlign == '') {
+    var align = `text-align: ${alineamiento};`, currentstyle = element.style.cssText;
+    element.style = currentstyle + align;
    }
    element.innerText = celda;
    sumaaltura = sumaaltura + heightform;
@@ -189,21 +235,22 @@ array[indice].slice(puntoinicio+borradoinicio,puntoinicio+palabra-borradofin)+
 enlacefin+
 array[indice].slice(puntoinicio+palabra-borradofin);
 }
-function Enlazar(Columna,Fila,array,indice,cuenta,ope1,ope2,ope3,ope4,inicio,final,ignorarinicio,ignorarfin) {
- if (Columna) {
-//formula: indice del array dividido entre la longitud de la tabla sobrante igual columna a enlazar-1
-  if(cuenta % ope1 == ope2) {
-   borradoInicioE(array,indice,array[indice],0);
-   borradoFinE(array,indice,array[indice],0);
-   array[indice] = crearEnlace(array,indice,0,array[indice].length);
+//       Enlazar(enlazarColumna,enlazarFila,listaceldas,conteo,conteolog,widthform,columnaEnlazada,enlazarFilaLimiteInferior,enlazarFilaLimiteSuperior,enlaceinicio,enlacefin);
+function Enlazar(indice = conteo) {
+ if (enlazarColumna) {
+//formula: indice del listaceldas dividido entre la longitud de la tabla sobrante igual enlazarColumna a enlazar-1
+  if(conteolog % widthform == columnaEnlazada) {
+   borradoInicioE(listaceldas,indice,listaceldas[indice],0);
+   borradoFinE(listaceldas,indice,listaceldas[indice],0);
+   listaceldas[indice] = crearEnlace(listaceldas,indice,0,listaceldas[indice].length);
   }
  }
- if (Fila) {
-  if (cuenta >= ope3 && cuenta < ope4 && String(array[indice]).slice(-final.length) != final && String(array[indice]).slice(0,inicio.length) != inicio) {
-   borradoInicioE(array,indice,array[indice],0);
-   borradoFinE(array,indice,array[indice],0);
-   if (String(array[indice]).slice(0,inicio.length) != inicio) {
-    array[indice] = crearEnlace(array,indice,0,array[indice].length);
+ if (enlazarFila) {
+  if (conteolog >= enlazarFilaLimiteInferior && conteolog < enlazarFilaLimiteSuperior) {
+   borradoInicioE(listaceldas,indice,listaceldas[indice],0);
+   borradoFinE(listaceldas,indice,listaceldas[indice],0);
+   if (listaceldas[indice].slice(0,enlaceinicio.length) != enlaceinicio) {
+    listaceldas[indice] = crearEnlace(listaceldas,indice,0,listaceldas[indice].length);
    }
   }
  }
@@ -215,7 +262,7 @@ var arin = array[indice].slice(puntoinicio,puntoinicio+palabra.length);
  while (arin.charAt(0) == ignorarinicioenlace) {
   borradoinicio++;
   arin = arin.slice(1);
-  if (borradoinicio > 8) {
+  if (borradoinicio > 800) {
 console.log(arin,'inimal');
 break
 }
@@ -228,7 +275,7 @@ var arin = array[indice].slice(puntoinicio,puntoinicio+palabra.length);
  while (arin.charAt(arin.length-1) == ignorarfinenlace) {
   borradofin++;
   arin = arin.slice(0,-1);
-  if (borradofin > 8) {
+  if (borradofin > 800) {
 console.log(arin,'finmal');
 break
 }
@@ -236,19 +283,19 @@ break
 }
 
 function determinarenlace() {
- if (isNaN(enlazarfil)) {
-  enlaceporfila = false;
+ if (isNaN(filaEnlazada)) {
+  enlazarFila = false;
  }
  else {
-  enlaceporfila = true;
+  enlazarFila = true;
  }
- if (isNaN(enlazarcol)) {
-  enlaceporcol = false;
+ if (isNaN(columnaEnlazada)) {
+  enlazarColumna = false;
  }
  else {
-  enlaceporcol = true;
+  enlazarColumna = true;
  }
- if (enlaceporfila || enlaceporcol) {
+ if (enlazarFila || enlazarColumna) {
   ejecutaragregarenlaces = true;
  }
  else {
@@ -314,6 +361,21 @@ listapalabras.forEach(palabra => {
 
 //Sección de Manipulación HTML
 
+function agregarAtributos(elemento, indice = conteo, puntoinicio, puntofin) {
+arin = listaceldas[indice].slice(puntoinicio, puntofin-1);
+ if (arin.indexOf('{cell') == 0) {
+  arin = arin.slice('cell'.length+2)
+  elemento = elemento.parentElement
+ }
+ if (arin.indexOf('{text') == 0) {
+  arin = arin.slice('text'.length+2)
+ }
+arin = arin.split(atributesDivider);
+arin.forEach(ele => {
+var atributo = ele.split(atributeNameDivider);
+elemento.setAttribute(atributo[0],atributo[1])
+})
+}
 function eventlisteners() {
 const dark = document.getElementById("darkmode");
  dark.addEventListener("mouseup", () => {
@@ -348,18 +410,14 @@ el1.value = el3;
 function darkchange(conversion, boton) {
 boton = document.querySelector("#darkmode > svg > path");
  if (conteodark == 0) {
-  conversion = document.querySelectorAll('.oscuro');
-   conversion.forEach(elementoactual => {
-    elementoactual.className = 'claro';
-   });
+  conversion = document.querySelector('.oscuro');
+   conversion.className = 'claro';
   boton.setAttribute('d',imgcla);
   conteodark++;
  }
  else {
-  conversion = document.querySelectorAll('.claro');
-  conversion.forEach(elementoactual => {
-  elementoactual.className = 'oscuro';
-  });
+  conversion = document.querySelector('.claro');
+  conversion.className = 'oscuro';
   boton.setAttribute('d',imgdrk);
   conteodark = 0;
  }
@@ -376,11 +434,13 @@ listaceldas = vloph('textoarray').split(separacion);
   listaceldas[conteo] = listaceldas[conteo].replaceAll('\n', '');
   conteo++;
  });
+rellenarcolumnasyfilas();
+//Rellenar el array para que la tabla no diga 'undefined'
  if (listaceldas.length < widthform * heightform) {  
-  var arlo = listaceldas.length;
+  var arrlo = listaceldas.length;
   listaceldas.length = widthform * heightform;
-  listaceldas.fill('',arlo,widthform * heightform);
-  console.log('añadir Relleno',widthform * heightform - arlo)
+  listaceldas.fill('',arrlo,widthform * heightform);
+  console.log('añadir Relleno',widthform * heightform - arrlo)
  }
 }
 function determinarSensibilidad(corchetesS){
@@ -389,6 +449,58 @@ function determinarSensibilidad(corchetesS){
  }
  if (corchetesS.indexOf('a') != -1) {
   accent = true;
+ }
+}
+
+function rellenarcolumnasyfilas(parte1, parte2, longitudDeColumna, indicecorchetes, relleno, conteo=0, comando, heightOrWidth, invertidoHeightorwidth) {
+var colbreak = vloph('colbreak'), rowbreak = vloph('rowbreak');
+ while (true) {
+//console.log('col',listaceldas.indexOf(colbreak),'row',listaceldas.indexOf(rowbreak));
+//console.log('col',listaceldas[listaceldas.indexOf(colbreak)],'row',listaceldas[listaceldas.indexOf(rowbreak)]);
+  if (listaceldas.indexOf(colbreak) < listaceldas.indexOf(rowbreak) && listaceldas.indexOf(colbreak) != -1|| listaceldas.indexOf(rowbreak) == -1) {
+   comando = colbreak;
+   heightorwidth = heightform;
+   invertidoHeightOrWidth = widthform;
+  }
+  else {
+   comando = rowbreak;
+   heightorwidth = widthform;
+   invertidoHeightOrWidth = heightform;
+  }
+  if (listaceldas.indexOf(colbreak) == -1 && listaceldas.indexOf(rowbreak) == -1) {
+   break;
+  }
+  indicecorchetes = listaceldas.indexOf(comando);
+  parte1 = listaceldas.slice(0, indicecorchetes);
+  parte2 = listaceldas.slice(indicecorchetes+1);
+  longitudDeColumna = parte1.length % heightorwidth;
+  if (modocolumna && comando == rowbreak || !modocolumna && comando == colbreak) {
+   var conteoRuptura = 0;
+   listaceldas = parte1.concat(parte2);
+   indicecorchetes = indicecorchetes-1;
+   if (indicecorchetes < 0) {
+    indicecorchetes = 0;
+    listaceldas.splice(indicecorchetes, 0, 'rewiycol');
+   }
+   while (indicecorchetes+invertidoHeightOrWidth < heightform*widthform) {
+    indicecorchetes = indicecorchetes + invertidoHeightOrWidth;
+    if (conteoRuptura > heightform*widthform) {
+     console.log('error fatal');
+     break;
+    }
+    listaceldas.splice(indicecorchetes, 0, '');
+conteoRuptura++;
+   }
+  }
+  else {
+   relleno = Array(heightorwidth - longitudDeColumna).fill('');
+   listaceldas = parte1.concat(relleno,parte2);
+  }
+conteo++;
+if (conteo > 9000) {
+console.log('+',conteo);
+break
+}
  }
 }
 
@@ -435,7 +547,6 @@ linkbox.style = "display:inline-block"
 const creditos = document.createElement('a');
 creditos.innerText = 'Creditos';
 creditos.href = 'creditos.html';
-creditos.className = 'oscuro';
 linkbox.appendChild(creditos);
 
 const spaceial = document.createElement('p');
@@ -446,11 +557,9 @@ linkbox.appendChild(spaceial.cloneNode(true));
 const ejemplos = document.createElement('a');
 ejemplos.innerText = 'Ejemplos/Funcionalidades Extra';
 ejemplos.href = 'ejemplos.html';
-ejemplos.className = 'oscuro';
 linkbox.appendChild(ejemplos);
 
 const imgcla = "M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z";
-
 const imgdrk = "M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z";
 
 listaceldas = [];
