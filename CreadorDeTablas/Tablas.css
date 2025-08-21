@@ -5,16 +5,16 @@ html {
 a {
   font-size:20px;
 }
-a.claro:link {
+.claro a:link {
   color:#3d4292;
 }
-a.oscuro:link {
+.oscuro a:link {
   color:#73acf5;
 }
-a.claro:visited {
+.claro a:visited {
   color:#7400b3;
 }
-a.oscuro:visited {
+.oscuro a:visited {
   color:#ff8ce9;
 }
 summary {
@@ -25,20 +25,32 @@ details[open] {
 margin: 20px 0;
 }
 .girar {
-  grid-area:e;
+  grid-area:b;
   margin:0px 10px;
   cursor:pointer;
 }
 .container {
   display: grid;
   grid-template-areas:
-    "g i h"
+    "ahh bhh chh"
+    "ah bh ch"
     "a b c"
+    "dh eh fh"
     "d e f"
+    "gh hh ih"
+    "g h i"
+    "jh kh lh"
     "j k l"
+    "mh nh oh"
     "m n o"
-    "p q u"
+    "ph qh sh"
+    "p q s"
+    "rh th uh"
+    "r t u"
+    "vh wh xh"
     "v w x"
+    "yh yh yh"
+    "y y y"
     "zh zh zh"
     "z z z";
   justify-content: start;
@@ -70,7 +82,7 @@ width:-moz-available;
     background: #e4e7eb;
     color: black;
 }
-.oscuro {
+.oscuro, .oscuro select, .oscuro svg{
     background: #1c1d22;
     color: #f0feff;
 }
@@ -85,16 +97,16 @@ input[type*="button"] {
     border-color: #5d5e66;
     cursor:pointer;
 }
-input.oscuro, textarea.oscuro{
+.oscuro input, .oscuro textarea {
     background: #303040;
     color: #f0feff;
     border-color: #5d5e66;
 }
-input.oscuro::placeholder, textarea.oscuro::placeholder {
+.oscuro input::placeholder, .oscuro textarea::placeholder {
 opacity: 0.7;
 color: #f0feff;
 }
-input.claro::placeholder, textarea.claro::placeholder {
+.claro input::placeholder, .claro textarea::placeholder {
 opacity: 0.8;
 color: black;
 }
@@ -108,11 +120,7 @@ table{
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
-.sun-editor-editable {
-	z-index: 1;
-}
-
-table thead tr, .se-wrapper-inner se-wrapper-wysiwyg sun-editor-editable table thead tr, .sun-editor-editable table th {
+table thead tr {
     background-color: #001839;
     color: #ffffff;
 }
