@@ -4,115 +4,87 @@
 <meta charset="utf-8">
 <link rel="shortcut icon" href="./favicon.png">
 <link rel="stylesheet" charset="utf-8" href="./Tablas.css">
-<SCRIPT src="./Tablas.js" charset="utf-8"></SCRIPT>
-<TITLE>Creador de Tablas</TITLE>
+<script>
+var conteodark = 0, imgcla, imgdrk;
 
+document.addEventListener("DOMContentLoaded", (event) => {
+  // Page has loaded
+  const dark = document.getElementById("darkmode");
+  dark.addEventListener("mouseup", () => {
+   darkchange();
+  });
+});
+function darkchange(conversion, boton) {
+boton = document.querySelector("#darkmode > svg > path");
+ if (conteodark == 0) {
+  conversion = document.querySelectorAll('.oscuro');
+   conversion.forEach(elementoactual => {
+    elementoactual.className = 'claro';
+   });
+  boton.setAttribute('d',imgcla);
+  conteodark++;
+ }
+ else {
+  conversion = document.querySelectorAll('.claro');
+  conversion.forEach(elementoactual => {
+  elementoactual.className = 'oscuro';
+  });
+  boton.setAttribute('d',imgdrk);
+  conteodark = 0;
+ }
+}
+imgcla = "M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z";
+imgdrk = "M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z";
+</script>
+<style>
+p {
+  font-size:20px;
+  display:inline-block;
+  margin:0px;
+}
+</style>
+<TITLE>Creditos</TITLE>
 </HEAD>
 <BODY>
-<button id="darkmode" onClick="click()">
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" style="background-color: transparent;" viewBox="0 0 16 16">
+<button id="darkmode" class="oscuro" onClick="click()">
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
 
 <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
 
 </svg>
 </button>
-<form name="tableproperties">
-<details>
-<summary>
-Opciones avanzadas
-</summary>
-<div class="container">
-<label for="separadorc" style="grid-area:ah;">Carácter de separación para todos los campos separados por comas</label>
-<INPUT type="text" name="reemplazocomas" style="grid-area:a;" placeholder="," id="separadorc">
-<label for="rowbreak" style="grid-area:dh;">Comando rowbreak</label>
-<INPUT type="text" name="reemplazocomas" style="grid-area:d;" placeholder="[wl]" id="rowbreak">
-<label for="colbreak" style="grid-area:gh;">Comando columnbreak</label>
-<INPUT type="text" name="saltodecolumna" style="grid-area:g;" placeholder="[hl]" id="colbreak">
-<label for="tableatributes" style="grid-area:jh;">Atributos de la tabla</label>
-<textarea type="text" name="atributostabla" style="grid-area:j;" placeholder="" id="tableatributes"></textarea>
-<label for="separadorentreatributoynombre" style="grid-area:mh;">Separador entre atributo y nombre de atributo</label>
-<INPUT type="text" name="separadorentreatributoynombre" style="grid-area:m;" placeholder="=" id="separadorentreatributoynombre">
-<label for="separadordeatributos" style="grid-area:ph;">Separador de atributos</label>
-<INPUT type="text" name="separadordeatributos" style="grid-area:p;" placeholder="|" id="separadordeatributos">
-</div>
-</details>
-<div class="container">
-<INPUT TYPE="button" VALUE="Crear tabla por filas" style="grid-area:ahh;cursor:pointer;" onClick="definirvariables()">
-<INPUT TYPE="button" VALUE="Crear tabla por columnas" style="grid-area:chh;cursor:pointer;" onClick="definirvariables(true)">
-<label for="widthform" style="grid-area:ah;">Longitud</label>
-<label for="heigthform" style="grid-area:ch;">Altura</label>
+<h1 style="margin-top:0px;">Credits:</h1>
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
+
+<path d="M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
+
+<path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+
+</svg>
 <br>
-<INPUT type="text" inputmode="numeric" name="width" style="grid-area:a;" placeholder="2" id="widthform">
-<svg id="girartabla" class="girar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+<br>
+<p>Source:</p>
+<p>Mozilla Web Docs light/dark theme icons</p>
+<br>
+<p>Author:</p>
+<p>???</p>
+<br>
+<br>
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
 
 <path d="M1.539,8.001 C2.367,8.001 2.918,7.45 2.918,6.622 L2.914,6.187 C2.914,6.187 2.709,4.954 4.354,4.954 L11.015,5 L11.015,6.759 C11.338,7.081 11.862,7.081 12.185,6.759 L14.758,4.187 C15.08,3.863 15.08,3.339 14.758,3.017 L12.185,0.292 C11.862,-0.03 11.338,-0.03 11.015,0.292 L11.015,2.137 C10.854,2.09 4.562,2.063 4.562,2.063 C0.851,2.063 0.039,4.492 0.039,5.47 L0.039,6.501 C0.039,7.329 0.711,8.001 1.539,8.001 L1.539,8.001 Z">
 </path>
 <path d="M13.5,8.042 C12.672,8.042 12,8.626 12,9.454 L12.002,10.411 C11.957,10.768 11.357,11.001 10.477,11.001 L3.938,11.001 L3.936,9.442 C3.614,9.12 3.09,9.12 2.766,9.442 L0.194,12.014 C-0.128,12.338 -0.128,12.862 0.194,13.184 L2.766,15.756 C3.09,16.08 3.614,16.08 3.936,15.756 L3.938,13.905 L10.477,13.905 C14.188,13.905 15,11.463 15,10.484 L15,9.453 C15,8.626 14.328,8.042 13.5,8.042 L13.5,8.042 Z">
 </path>
 </svg>
-<INPUT type="text" inputmode="numeric" name="height" style="grid-area:c;" placeholder="3" id="heigthform">
-</div>
-<details>
-<summary>
-Opciones de enlaces
-</summary>
-<div class="container">
-<label for="enlazarcol" style="grid-area:ah;">Columna a enlazar</label>
-<label for="enlazarfil" style="grid-area:ch;">Fila a enlazar</label>
-<INPUT type="text" inputmode="numeric" name="columna a enlazar" style="grid-area:a;" placeholder="Pensado para FeatherWiki" id="enlazarcol">
-<svg id="girarenlaces" class="girar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-
-<path d="M1.539,8.001 C2.367,8.001 2.918,7.45 2.918,6.622 L2.914,6.187 C2.914,6.187 2.709,4.954 4.354,4.954 L11.015,5 L11.015,6.759 C11.338,7.081 11.862,7.081 12.185,6.759 L14.758,4.187 C15.08,3.863 15.08,3.339 14.758,3.017 L12.185,0.292 C11.862,-0.03 11.338,-0.03 11.015,0.292 L11.015,2.137 C10.854,2.09 4.562,2.063 4.562,2.063 C0.851,2.063 0.039,4.492 0.039,5.47 L0.039,6.501 C0.039,7.329 0.711,8.001 1.539,8.001 L1.539,8.001 Z">
-</path>
-<path d="M13.5,8.042 C12.672,8.042 12,8.626 12,9.454 L12.002,10.411 C11.957,10.768 11.357,11.001 10.477,11.001 L3.938,11.001 L3.936,9.442 C3.614,9.12 3.09,9.12 2.766,9.442 L0.194,12.014 C-0.128,12.338 -0.128,12.862 0.194,13.184 L2.766,15.756 C3.09,16.08 3.614,16.08 3.936,15.756 L3.938,13.905 L10.477,13.905 C14.188,13.905 15,11.463 15,10.484 L15,9.453 C15,8.626 14.328,8.042 13.5,8.042 L13.5,8.042 Z">
-</path>
-</svg>
-<INPUT type="text" inputmode="numeric" name="fila a enlazar" style="grid-area:c;" placeholder="Pensado para FeatherWiki" id="enlazarfil">
-<label for="enlaceinicio" style="grid-area:dh;">Inicio del enlace</label>
-<label for="enlacefin" style="grid-area:fh;">Fin del enlace</label>
-<INPUT type="text" name="Inicio enlace" style="grid-area:d;" placeholder="[[" id="enlaceinicio">
-<INPUT type="text" name="Fin enlace" style="grid-area:f;" placeholder="]]" id="enlacefin">
-<label for="ignorarinicioenlace" style="grid-area:gh;">Excluir del inicio del enlace</label>
-<label for="ignorarfinenlace" style="grid-area:ih;">Excluir del fin del enlace</label>
-<INPUT type="text" name="ignorarinicio" style="grid-area:g;" placeholder="*" id="ignorarinicioenlace">
-<INPUT type="text" name="ignorarfin" style="grid-area:i;" placeholder="*" id="ignorarfinenlace">
-<label for="enlazarpalabras" style="grid-area:zh;">Palabras a enlazar (separadas por comas)</label>
-<INPUT type="text" name="enlazarpalabras" style="grid-area:z;" placeholder="" id="enlazarpalabras">
-</div>
-</details>
-<label for="separacion">caracteres de separación</label>
 <br>
-<INPUT type="text" name="caracteres de separacion" placeholder="," id="separacion">
 <br>
-<label for="borrar">Caracteres a borrar del inicio (separados por comas)</label>
+<a class="oscuro" href="https://www.svgrepo.com/svg/434503/arrow-change">Source</a>
 <br>
-<INPUT type="text" name="Caracteres a borrar del inicio" placeholder="^,~" id="borrar">
+<a class="oscuro" href="https://www.svgrepo.com/author/Frexy/">Author</a>
 <br>
-<label for="alineamiento">Alineamiento:</label>
-
-<br>
-
-<select id="alineamiento">
-<option value="Nada">Nada</option>
-<option value="start">Inicio</option>
-<option value="end">Fin</option>
-<option value="left">Izquierda</option>
-<option value="right">Derecha</option>
-<option value="center">Centro</option>
-<option value="justify">Justificado</option>
-<option value="match-parent">Match-Parent</option>
-<option value="-Webkit-Match-Parent">-Webkit-Match-Parent</option>
-</select>
-<br>
-<label for="textoarray">Texto de las celdas</label>
-<br>
-<textarea placeholder="^~~^Hello,\n^~~^World,\n^~~^Hola,\n^~~^Mundo,\n^~~^Saluton,\n^~~^Mondo" id="textoarray"></textarea>
-<br>
-<INPUT TYPE="button"  VALUE="Quitar Encabezado" onClick="quitarencabezado()" id="encabezado">
-</FORM>
-<label for="textotabla">Código HTML de la tabla</label>
-<br>
-<textarea style="width:fit-content;height:250px;" id="textotabla"></textarea>
-<!--< class="se-table-size-auto"p>inspeccionar > seleccionar elemento table  > copiar HTML externo > pegar en vista de código de sun editor > salir de vista de código</p>-->
 </BODY>
 </HTML>
