@@ -2,6 +2,20 @@ html {
     font-size: 16px;
     font-family: Segoe UI,BlinkMacSystemFont,-apple-system,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
 }
+.copy {
+  position: fixed;
+  bottom: 2em;
+  width: 100%;
+  transition: bottom 0.5s ease-in 0s;
+}
+.copy p {
+  width: fit-content;
+  margin: auto;
+  background-color: #303040;
+  color: #f0feff;
+  padding: 0.3em 1em;
+  border: 0.2em solid #5d5e66;
+}
 a {
   font-size:20px;
 }
@@ -78,6 +92,11 @@ width:-moz-available;
 	background-color: #fff0;
 	border-width: 0px;
 }
+#copiartabla {
+    display: inline-block;
+    border-width: 0;
+    background-color: #fff0;
+}
 .claro {
     background: #e4e7eb;
     color: black;
@@ -153,4 +172,5 @@ table tbody tr td div, table thead tr th div {
 
 table thead tr th div span, table thead tr th div {
 font-size: 16px;
+font-weight: normal;
 }
