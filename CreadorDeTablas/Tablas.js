@@ -1,5 +1,5 @@
 var conteo, conteolog, conteoencabezado = 0, conteodark = 0, borradoinicio, borradofin, modocolumna, enlazarFilaLimiteInferior, enlazarFilaLimiteSuperior, sensitivity, caseS = false, accent = false, tablaconencabezado, tablasinencabezado;
-var listaceldas, widthform, heightform, columnaEnlazada, filaEnlazada, borrarr, textotabla, enlazarColumna, enlazarFila, enlaceinicio, enlacefin, ignorarinicioenlace, ignorarfinenlace, enlazarpalabras, separadorc, atributeNameDivider, atributesDivider;
+var listaceldas, widthform, heightform, columnaEnlazada, filaEnlazada, borrarr, textotabla, enlazarColumna, enlazarFila, enlaceinicio, enlacefin, ignorarinicioenlace, ignorarfinenlace, enlazarpalabras, separadorc, atributeNameDivider, atributesDivider, markdownify;
 var tabla, thead, tbody, trh, trb, td, th, div, divc;
 var ejecutaragregarenlaces, ejecutarenlazarpalabras;
 //Definiciónes
@@ -8,8 +8,37 @@ document.addEventListener("DOMContentLoaded", (event) => {
 // Page has loaded
 document.querySelector("#textoarray").placeholder = document.querySelector("#textoarray").placeholder.replaceAll('\\n', '\n')
 eventlisteners();
+LimpiarURL();
 definirvariables(false);
 });
+
+function LimpiarURL() {
+var queryURL = document.location.search.slice(1);
+queryURL = queryURL.split('&');
+queryURL.forEach(ele => {
+var idYvalor = ele.split('='),elemento=document.getElementById(idYvalor[0]);
+ if (elemento !== null && elemento.type == 'text' || elemento !== null && elemento.type == 'textarea') {
+  elemento.value = decodeURIComponent(idYvalor[1]).replaceAll('u0026','&').replaceAll('u003D','=');
+ }
+});
+history.replaceState(null, "", document.location.pathname);
+}
+
+function CrearURL() {
+var allInputs = document.querySelectorAll('input[type="text"], textarea'),
+inputsConTexto = []
+basePath = document.location.origin + document.location.pathname,
+parametros = '?',
+final='';
+ allInputs.forEach(input => {
+  if (input.value != '' && input.id != 'textotabla') {
+   inputsConTexto.push(input);
+   parametros = `${parametros}${input.id}=${input.value.replaceAll('&','u0026').replaceAll('=','u003D')}&`;
+  }
+ });
+final = basePath + parametros.slice(0,-1);
+return final;
+}
 
 function definirvariables(col = false) {
  if (col) {
@@ -36,6 +65,7 @@ borrarr = vloph('borrar').split(separadorc);
 alineamiento = vloph('alineamiento');
 atributeNameDivider = vloph('separadorentreatributoynombre');
 atributesDivider = vloph('separadordeatributos');
+markdownify = document.getElementById('markdownify').checked;
 textotabla = document.getElementById('textotabla');
 determinarenlace();
  if (enlazarpalabras.length == 1 && enlazarpalabras[0] == '') {
@@ -103,6 +133,7 @@ enlazarFilaLimiteSuperior = filaEnlazada * widthform;
 const divs = document.querySelectorAll('div:not(.container)');
  if (!modocolumna) {
   divs.forEach(element => {
+if (element.isConnected) {
    indiceAtributoCell = listaceldas[conteo].indexOf('{cell');
    if (indiceAtributoCell != -1) {
     var indiceAtributoCellFin = listaceldas[conteo].indexOf('}', indiceAtributoCell)
@@ -129,10 +160,15 @@ const divs = document.querySelectorAll('div:not(.container)');
    celda = listaceldas[conteo];
    conteo++;
    element.innerText = celda;
+   if (markdownify) {
+    agregarMarkdown(element);
+   }
+}
   });
  }
  if (modocolumna) {
   divs.forEach(element => {
+if (element.isConnected) {
    if (conteodiv != 0) {
     conteocol = conteo+sumaaltura+rsaltura;
     indiceAtributoCell = listaceldas[conteocol].indexOf('{cell');
@@ -182,6 +218,9 @@ const divs = document.querySelectorAll('div:not(.container)');
     element.style = currentstyle + align;
    }
    element.innerText = celda;
+   if (markdownify) {
+    agregarMarkdown(element);
+   }
    sumaaltura = sumaaltura + heightform;
    conteodiv++;
    conteolog++;
@@ -190,7 +229,8 @@ const divs = document.querySelectorAll('div:not(.container)');
     conteodiv = 0;
     sumaaltura = 0;
     rsaltura = -1;
-   } 
+   }
+}
   });
  }
 textotabla.value = document.querySelector('table').outerHTML.replaceAll('>', '>\n').replaceAll('</div>', '\n</div>');
@@ -361,6 +401,42 @@ listapalabras.forEach(palabra => {
 
 //Sección de Manipulación HTML
 
+function agregarMarkdown(elemento, outer) {
+function remplazoMarkdown(marketiqueta, etiqueta) {
+  if (conteobarra == 0) {
+   conteobarra++;
+   barra = '';
+  }
+  else {
+   conteobarra = 0;
+   barra = `/`;
+  }
+  outer = outer.replace(`${marketiqueta}`, `<${barra}${etiqueta}>`);
+}
+outer = elemento.innerHTML;
+var conteobarra = 0, barra = '';
+ while (outer.indexOf('**') != -1) {
+  remplazoMarkdown('**', 'strong');
+ }
+ conteobarra = 0;
+ while (outer.indexOf('__') != -1) {
+  remplazoMarkdown('__', 'strong')
+ }
+ conteobarra = 0;
+ while (outer.indexOf('~~') != -1) {
+  remplazoMarkdown('~~', 'del')
+ }
+ conteobarra = 0;
+ while (outer.indexOf('*') != -1) {
+  remplazoMarkdown('*', 'em')
+ }
+ conteobarra = 0;
+ while (outer.indexOf('_') != -1) {
+  remplazoMarkdown('_', 'em')
+ }
+elemento.innerHTML = outer;
+}
+
 function agregarAtributos(elemento, indice = conteo, puntoinicio, puntofin) {
 arin = listaceldas[indice].slice(puntoinicio, puntofin-1);
  if (arin.indexOf('{cell') == 0) {
@@ -371,10 +447,16 @@ arin = listaceldas[indice].slice(puntoinicio, puntofin-1);
   arin = arin.slice('text'.length+2)
  }
 arin = arin.split(atributesDivider);
-arin.forEach(ele => {
-var atributo = ele.split(atributeNameDivider);
-elemento.setAttribute(atributo[0],atributo[1])
-})
+ arin.forEach(ele => {
+ var atributo = ele.split(atributeNameDivider);
+ elemento.setAttribute(atributo[0],atributo[1]);
+  if (atributo[0].toLowerCase() == 'colspan' && elemento.tagName != 'DIV') {
+   var tr = elemento.parentElement, repeticiones = Number(atributo[1])-1;
+   for (var count = 0; count < repeticiones;count++) {
+    tr.lastElementChild.remove();
+   }
+  }
+ });
 }
 function eventlisteners() {
 const dark = document.getElementById("darkmode");
@@ -395,6 +477,33 @@ const sepac = document.getElementById("separadorc");
   document.querySelector('label[for="borrar"]').textContent = cambiaretiqueta('o', 'Caracteres a borrar del inicio')
   document.querySelector('label[for="enlazarpalabras"]').textContent = cambiaretiqueta('a', 'Palabras a enlazar')
  });
+const copiartabla = document.getElementById("copiartabla");
+ copiartabla.addEventListener("mouseup", () => {
+  writeClipboardText(textotabla.value);
+ });
+const copiaropciones = document.getElementById("copiaropciones");
+ copiaropciones.addEventListener("mouseup", () => {
+  writeClipboardText(CrearURL());
+ });
+}
+
+async function writeClipboardText(text) {
+ try {
+  document.querySelector('.copy').style.bottom='2em';
+  await navigator.clipboard.writeText(text);
+  document.querySelector('.copy p').textContent='Texto copiado exitosamente';
+ }
+ catch (error) {
+  console.log(error.message);
+  document.querySelector('.copy p').textContent='Error al copiar el texto';
+ }
+ finally {
+  setTimeout(() => {ocultarcopia();}, 1500);
+ }
+}
+
+function ocultarcopia() {
+document.querySelector('.copy').style.bottom='-3em';
 }
 
 function cambiaretiqueta(ao, inicio) {
