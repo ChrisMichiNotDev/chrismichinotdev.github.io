@@ -21,6 +21,68 @@
 <form name="tableproperties">
 <details>
 <summary>
+CSS
+</summary>
+<label for="CustomCSS">CSS personalizado</label>
+<br>
+<textarea class="CodeTextArea" id="CustomCSS">
+table {
+    border-collapse: collapse;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    color: black;
+}
+
+table thead tr {
+    background-color: #001839;
+    color: #ffffff;
+    text-align: left;
+}
+
+table thead tr {
+  border-right: solid 1px #001839;
+  border-left: solid 1px #001839;
+}
+
+table th, table td {
+    padding: 5px 5px;
+    font-weight: normal;
+}
+
+table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+table tbody tr:nth-of-type(even) td {
+	background-color: #e4e7eb;
+	border: solid black;
+	border-width: 0px 1px;
+}
+
+table tbody tr:nth-of-type(odd) td {
+	background-color: #b5d8e9;
+	border: solid black;
+	border-width: 0px 1px;
+}
+
+table tbody tr td div, table thead tr th div {
+    text-align: center;
+}
+
+table thead tr th div span, table thead tr th div {
+font-size: 1rem;
+}
+</textarea>
+<button class="copybutton" type="button" id="copiarcss" inputcopiar="CustomCSS" title="Copiar CSS personalizado al portapapeles">
+<svg xmlns="http://www.w3.org/2000/svg" fill="currentcolor" width="48px" height="48px" viewBox="0 0 60 67">
+<path d="M50.365 51C52.568 51 54 49.276 54 46.877V19.999H38.5c-1.104 0-2.5-.515-2.5-1.619V3.999H21.134C19.02 3.999 16 4.813 16 6.876v5.123H26.28c.039 0 .045.199.083.201.036-.002.039.18.075.18.792 0 1.408.465 1.732 1.132L45.6 29.571c.414.379.4.914.4 1.476V51h4.365ZM39.716 29 28 19.122V29H39.716ZM42 59.37V33H26.5c-1.104 0-2.5-.515-2.5-1.619V16H8.642C7.095 16 4 16.769 4 19.369V59.37C4 61.619 6.319 63 8.642 63H37.873C40.062 63 42 61.733 42 59.37ZM40 6.665V16H51.149L40 6.665Zm17.246 9.863c.734.296 1.129 1.013 1.129 1.853 0 .03-.133.059-.134.089.001.028-.241.056-.241.085V46.878C58 51.487 54.775 55 50.365 55H46v4.37C46 63.712 42.55 67 37.873 67H8.642C4.077 67 0 63.862 0 59.37V19.369C0 15.124 3.696 12 8.642 12H12V6.877C12 2.81 15.727 0 21.134 0H38.771c.499 0 .981.377 1.349.713L57.246 16.528Z">
+</path>
+</svg>
+</button>
+</details>
+<details>
+<summary>
 Opciones avanzadas
 </summary>
 <div class="container">
@@ -45,7 +107,7 @@ Opciones avanzadas
 <label for="heigthform" style="grid-area:ch;">Altura</label>
 <br>
 <INPUT type="text" inputmode="numeric" name="width" style="grid-area:a;" placeholder="2" id="widthform">
-<svg id="girartabla" class="girar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+<svg input1="widthform" input2="heigthform" id="girartabla" class="girar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
 
 <path d="M1.539,8.001 C2.367,8.001 2.918,7.45 2.918,6.622 L2.914,6.187 C2.914,6.187 2.709,4.954 4.354,4.954 L11.015,5 L11.015,6.759 C11.338,7.081 11.862,7.081 12.185,6.759 L14.758,4.187 C15.08,3.863 15.08,3.339 14.758,3.017 L12.185,0.292 C11.862,-0.03 11.338,-0.03 11.015,0.292 L11.015,2.137 C10.854,2.09 4.562,2.063 4.562,2.063 C0.851,2.063 0.039,4.492 0.039,5.47 L0.039,6.501 C0.039,7.329 0.711,8.001 1.539,8.001 L1.539,8.001 Z">
 </path>
@@ -62,7 +124,7 @@ Opciones de enlaces
 <label for="enlazarcol" style="grid-area:ah;">Columna a enlazar</label>
 <label for="enlazarfil" style="grid-area:ch;">Fila a enlazar</label>
 <INPUT type="text" inputmode="numeric" name="columna a enlazar" style="grid-area:a;" placeholder="Pensado para FeatherWiki" id="enlazarcol">
-<svg id="girarenlaces" class="girar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+<svg input1="enlazarcol" input2="enlazarfil" id="girarenlaces" class="girar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
 
 <path d="M1.539,8.001 C2.367,8.001 2.918,7.45 2.918,6.622 L2.914,6.187 C2.914,6.187 2.709,4.954 4.354,4.954 L11.015,5 L11.015,6.759 C11.338,7.081 11.862,7.081 12.185,6.759 L14.758,4.187 C15.08,3.863 15.08,3.339 14.758,3.017 L12.185,0.292 C11.862,-0.03 11.338,-0.03 11.015,0.292 L11.015,2.137 C10.854,2.09 4.562,2.063 4.562,2.063 C0.851,2.063 0.039,4.492 0.039,5.47 L0.039,6.501 C0.039,7.329 0.711,8.001 1.539,8.001 L1.539,8.001 Z">
 </path>
@@ -117,8 +179,8 @@ Opciones de enlaces
 </FORM>
 <label for="textotabla">Código HTML de la tabla</label>
 <br>
-<textarea style="width:fit-content;height:250px;" id="textotabla"></textarea>
-<button id="copiartabla" title="Copiar código de la tabla al portapapeles">
+<textarea class="CodeTextArea" id="textotabla"></textarea>
+<button class="copybutton" id="copiartabla" inputcopiar="textotabla" title="Copiar código de la tabla al portapapeles">
 <svg xmlns="http://www.w3.org/2000/svg" fill="currentcolor" width="48px" height="48px" viewBox="0 0 60 67">
 <path d="M50.365 51C52.568 51 54 49.276 54 46.877V19.999H38.5c-1.104 0-2.5-.515-2.5-1.619V3.999H21.134C19.02 3.999 16 4.813 16 6.876v5.123H26.28c.039 0 .045.199.083.201.036-.002.039.18.075.18.792 0 1.408.465 1.732 1.132L45.6 29.571c.414.379.4.914.4 1.476V51h4.365ZM39.716 29 28 19.122V29H39.716ZM42 59.37V33H26.5c-1.104 0-2.5-.515-2.5-1.619V16H8.642C7.095 16 4 16.769 4 19.369V59.37C4 61.619 6.319 63 8.642 63H37.873C40.062 63 42 61.733 42 59.37ZM40 6.665V16H51.149L40 6.665Zm17.246 9.863c.734.296 1.129 1.013 1.129 1.853 0 .03-.133.059-.134.089.001.028-.241.056-.241.085V46.878C58 51.487 54.775 55 50.365 55H46v4.37C46 63.712 42.55 67 37.873 67H8.642C4.077 67 0 63.862 0 59.37V19.369C0 15.124 3.696 12 8.642 12H12V6.877C12 2.81 15.727 0 21.134 0H38.771c.499 0 .981.377 1.349.713L57.246 16.528Z">
 </path>
