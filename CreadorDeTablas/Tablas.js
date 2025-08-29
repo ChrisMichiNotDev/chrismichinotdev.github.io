@@ -6,7 +6,11 @@ var ejecutaragregarenlaces, ejecutarenlazarpalabras;
 
 document.addEventListener("DOMContentLoaded", (event) => {
 // Page has loaded
+var storageCSS = localStorage.getItem('CSSCustom');
 document.querySelector("#textoarray").placeholder = document.querySelector("#textoarray").placeholder.replaceAll('\\n', '\n')
+ if (storageCSS != '' || storageCSS !== null) {
+  document.getElementById('CustomCSS').value = storageCSS
+ }
 eventlisteners();
 LimpiarURL();
 definirvariables(false);
@@ -18,7 +22,7 @@ queryURL = queryURL.split('&');
 queryURL.forEach(ele => {
 var idYvalor = ele.split('='),elemento=document.getElementById(idYvalor[0]);
  if (elemento !== null && elemento.type == 'text' || elemento !== null && elemento.type == 'textarea') {
-  elemento.value = decodeURIComponent(idYvalor[1]).replaceAll('u0026','&').replaceAll('u003D','=');
+  elemento.value = decodeURIComponent(idYvalor[1]);
  }
 });
 history.replaceState(null, "", document.location.pathname);
@@ -33,7 +37,7 @@ final='';
  allInputs.forEach(input => {
   if (input.value != '' && input.id != 'textotabla') {
    inputsConTexto.push(input);
-   parametros = `${parametros}${input.id}=${input.value.replaceAll('&','u0026').replaceAll('=','u003D')}&`;
+   parametros = `${parametros}${input.id}=${encodeURIComponent(input.value)}&`;
   }
  });
 final = basePath + parametros.slice(0,-1);
@@ -119,6 +123,7 @@ document.body.appendChild(linkbox);
 }
 
 function agregarceldas() {
+CSSpersonalizado.textContent = document.getElementById('CustomCSS').value;
 var sumaaltura = 0, rsaltura = -1, conteoarray = 0, conteodiv = 0, indiceAtributoCell, indiceAtributoText;
 listaceldas.forEach(elemento => {
   while (borrar(listaceldas[conteoarray].charAt(0))) {
@@ -239,6 +244,7 @@ conteoencabezado = 0;
 console.log('Busqueda realizada en',divs.length,'Divs. Agregadas',conteolog,'celdas de',listaceldas.length,'disponibles');
 tablaconencabezado = '';
 tablasinencabezado = '';
+localStorage.setItem(`CSSCustom`,document.getElementById('CustomCSS').value)
 }
 
 function quitarencabezado() {
@@ -463,13 +469,11 @@ const dark = document.getElementById("darkmode");
  dark.addEventListener("mouseup", () => {
   darkchange();
   });
-const giro = document.getElementById("girartabla");
- giro.addEventListener("mouseup", () => {
-  girar(document.getElementById('widthform'), document.getElementById('heigthform'));
- });
-const giro2 = document.getElementById("girarenlaces");
- giro2.addEventListener("mouseup", () => {
-  girar(document.getElementById('enlazarcol'), document.getElementById('enlazarfil'));
+const giradores = document.querySelectorAll(".girar");
+ giradores.forEach(button => {
+  button.addEventListener("mouseup", () => {
+   girar(document.getElementById(button.getAttribute('input1')), document.getElementById(button.getAttribute('input2')));
+  });
  });
 const sepac = document.getElementById("separadorc");
  sepac.addEventListener("keyup", () => {
@@ -477,9 +481,11 @@ const sepac = document.getElementById("separadorc");
   document.querySelector('label[for="borrar"]').textContent = cambiaretiqueta('o', 'Caracteres a borrar del inicio')
   document.querySelector('label[for="enlazarpalabras"]').textContent = cambiaretiqueta('a', 'Palabras a enlazar')
  });
-const copiartabla = document.getElementById("copiartabla");
- copiartabla.addEventListener("mouseup", () => {
-  writeClipboardText(textotabla.value);
+const copybuttons = document.querySelectorAll('.copybutton');
+ copybuttons.forEach(
+  button => {button.addEventListener("mouseup", () => {
+   writeClipboardText(document.getElementById(button.getAttribute('inputcopiar')).value);
+  });
  });
 const copiaropciones = document.getElementById("copiaropciones");
  copiaropciones.addEventListener("mouseup", () => {
@@ -667,6 +673,9 @@ const ejemplos = document.createElement('a');
 ejemplos.innerText = 'Ejemplos/Funcionalidades Extra';
 ejemplos.href = 'ejemplos.html';
 linkbox.appendChild(ejemplos);
+
+const CSSpersonalizado = document.createElement('style');
+document.head.appendChild(CSSpersonalizado)
 
 const imgcla = "M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z";
 const imgdrk = "M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z";
