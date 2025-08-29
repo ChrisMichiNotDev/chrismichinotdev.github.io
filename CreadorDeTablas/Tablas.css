@@ -1,5 +1,5 @@
 html {
-    font-size: 16px;
+    font-size: clamp(16px, 1.172vw, 32px);
     font-family: Segoe UI,BlinkMacSystemFont,-apple-system,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
 }
 .copy {
@@ -17,7 +17,7 @@ html {
   border: 0.2em solid #5d5e66;
 }
 a {
-  font-size:20px;
+  font-size: 1.25em;
 }
 .claro a:link {
   color:#3d4292;
@@ -32,11 +32,11 @@ a {
   color:#ff8ce9;
 }
 summary {
-margin: 20px 0;
-cursor: pointer;
+  margin: 1.25em 0;
+  cursor: pointer;
 }
 details[open] {
-margin: 20px 0;
+  margin: 1.25em 0;
 }
 .girar {
   grid-area:b;
@@ -73,104 +73,67 @@ margin: 20px 0;
 }
 
 input, textarea, select, label{
-font-size: 16px;
+  font-size: clamp(16px, 1.172vw, 32px);
 }
 svg {
   cursor:pointer;
 }
 #textoarray {
-height: 200px;
-width:stretch;
-width:-webkit-fill-available;
-width:-moz-available;
+  height: 200px;
+  width:stretch;
+  width:-webkit-fill-available;
+  width:-moz-available;
 }
 #darkmode {
-	position:fixed;
-	bottom:16px;
-	right:8px;
-	border-radius: 100px;
-	background-color: #fff0;
-	border-width: 0px;
+  position:fixed;
+  bottom:16px;
+  right:8px;
+  border-radius: 100px;
+  background-color: #fff0;
+  border-width: 0px;
 }
-#copiartabla {
-    display: inline-block;
-    border-width: 0;
-    background-color: #fff0;
+.copybutton {
+  display: inline-block;
+  border-width: 0;
+  background-color: #fff0;
 }
 .claro {
-    background: #e4e7eb;
-    color: black;
+  background: #e4e7eb;
+  color: black;
 }
 .oscuro, .oscuro select, .oscuro svg{
-    background: #1c1d22;
-    color: #f0feff;
+  background: #1c1d22;
+  color: #f0feff;
 }
 
 input.claro, textarea.claro, select.claro {
-    background: #ffffff;
-    color: black;
+  background: #ffffff;
+  color: black;
 }
-input[type*="button"] {
-    background: #303040;
-    color: #f0feff;
-    border-color: #5d5e66;
-    cursor:pointer;
+input[type="text"] {
+ font-family: monospace; 
+}
+input[type="button"] {
+  background: #303040;
+  color: #f0feff;
+  border-color: #5d5e66;
+  cursor:pointer;
 }
 .oscuro input, .oscuro textarea {
-    background: #303040;
-    color: #f0feff;
-    border-color: #5d5e66;
+  background: #303040;
+  color: #f0feff;
+  border-color: #5d5e66;
 }
 .oscuro input::placeholder, .oscuro textarea::placeholder {
-opacity: 0.7;
-color: #f0feff;
+  opacity: 0.7;
+  color: #f0feff;
 }
 .claro input::placeholder, .claro textarea::placeholder {
-opacity: 0.8;
-color: black;
+  opacity: 0.8;
+  color: black;
 }
 
-table{
-    border-collapse: collapse;
-    margin: 25px 0;
-    font-size: 0.9em;
-    font-family: sans-serif;
-    min-width: 400px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-}
-
-table thead tr {
-    background-color: #001839;
-    color: #ffffff;
-}
-
-table th, table td {
-    padding: 5px 5px;
-}
-
-table tbody tr {
-    border-bottom: 1px solid #dddddd;
-}
-
-table tbody tr:nth-of-type(even) td {
-	background-color: #e4e7eb;
-	color: black;
-	border: solid black;
-	border-width: 0px 1px;
-}
-
-table tbody tr:nth-of-type(odd) td {
-	background-color: #b5d8e9;
-	color: black;
-	border: solid black;
-	border-width: 0px 1px;
-}
-
-table tbody tr td div, table thead tr th div {
-    text-align: center;
-}
-
-table thead tr th div span, table thead tr th div {
-font-size: 16px;
-font-weight: normal;
+.CodeTextArea {
+  width: 25em;
+  height: 15.625em;
 }
