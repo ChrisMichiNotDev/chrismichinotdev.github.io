@@ -2,13 +2,13 @@ html {
     font-size: clamp(16px, 1.172vw, 32px);
     font-family: Segoe UI,BlinkMacSystemFont,-apple-system,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
 }
-.copy {
+.copy, .save {
   position: fixed;
   bottom: 2em;
   width: 100%;
   transition: bottom 0.5s ease-in 0s;
 }
-.copy p {
+.copy p, .save p {
   width: fit-content;
   margin: auto;
   background-color: #303040;
@@ -72,7 +72,7 @@ details[open] {
   justify-items: center;
 }
 
-input, textarea, select, label{
+input, textarea, select, label, button{
   font-size: clamp(16px, 1.172vw, 32px);
 }
 svg {
@@ -113,11 +113,14 @@ input.claro, textarea.claro, select.claro {
 input[type="text"] {
  font-family: monospace; 
 }
-input[type="button"] {
+input[type="button"], button {
   background: #303040;
   color: #f0feff;
   border-color: #5d5e66;
   cursor:pointer;
+}
+.claro button svg {
+  color: black;
 }
 .oscuro input, .oscuro textarea {
   background: #303040;
@@ -131,6 +134,25 @@ input[type="button"] {
 .claro input::placeholder, .claro textarea::placeholder {
   opacity: 0.8;
   color: black;
+}
+
+.oscuro dialog {
+  background-color: #1c1d22;
+  color: #f0feff;
+  border-color: black;
+}
+
+::backdrop {
+  background-color: #0004;
+}
+
+.flexDialogForm {
+  display: flex;
+  column-gap: 0.5em;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
 .CodeTextArea {
