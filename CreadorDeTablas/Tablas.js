@@ -1,15 +1,19 @@
 var conteo, conteolog, conteoencabezado = 0, conteodark = 0, borradoinicio, borradofin, modocolumna, enlazarFilaLimiteInferior, enlazarFilaLimiteSuperior, sensitivity, caseS = false, accent = false, tablaconencabezado, tablasinencabezado;
-var listaceldas, widthform, heightform, columnaEnlazada, filaEnlazada, borrarr, textotabla, enlazarColumna, enlazarFila, enlaceinicio, enlacefin, ignorarinicioenlace, ignorarfinenlace, enlazarpalabras, separadorc, atributeNameDivider, atributesDivider, markdownify;
+var listaceldas, widthform, heightform, columnaEnlazada, filaEnlazada, borrarr, textotabla, enlazarColumna, enlazarFila, enlaceinicio, enlacefin, ignorarinicioenlace, ignorarfinenlace, enlazarpalabras, separadorc, atributeNameDivider, atributesDivider, markdownify, CustomCSSCampo;
 var tabla, thead, tbody, trh, trb, td, th, div, divc;
 var ejecutaragregarenlaces, ejecutarenlazarpalabras;
 //Definiciónes
 
 document.addEventListener("DOMContentLoaded", (event) => {
 // Page has loaded
-var storageCSS = localStorage.getItem('CSSCustom');
+CustomCSSCampo = document.getElementById('CustomCSS');
+var storageCSS = localStorage.getItem(localStorage.getItem('lastCSS'));
 document.querySelector("#textoarray").placeholder = document.querySelector("#textoarray").placeholder.replaceAll('\\n', '\n')
  if (storageCSS != '' && storageCSS !== null) {
-  document.getElementById('CustomCSS').value = storageCSS
+  CustomCSSCampo.value = storageCSS;
+ }
+ if (localStorage.getItem('lastCSS') !== null) {
+  document.getElementById('CSSSaveButton').value = `Guardar a ${localStorage.getItem('lastCSS').slice(3)}`;
  }
 eventlisteners();
 LimpiarURL();
@@ -29,7 +33,7 @@ history.replaceState(null, "", document.location.pathname);
 }
 
 function CrearURL() {
-var allInputs = document.querySelectorAll('input[type="text"], textarea'),
+var allInputs = document.querySelectorAll('form[name="tableproperties"] input[type="text"], form[name="tableproperties"] textarea'),
 inputsConTexto = []
 basePath = document.location.origin + document.location.pathname,
 parametros = '?',
@@ -123,7 +127,7 @@ document.body.appendChild(linkbox);
 }
 
 function agregarceldas() {
-CSSpersonalizado.textContent = document.getElementById('CustomCSS').value;
+CSSpersonalizado.textContent = CustomCSSCampo.value;
 var sumaaltura = 0, rsaltura = -1, conteoarray = 0, conteodiv = 0, indiceAtributoCell, indiceAtributoText;
 listaceldas.forEach(elemento => {
   while (borrar(listaceldas[conteoarray].charAt(0))) {
@@ -244,7 +248,10 @@ conteoencabezado = 0;
 console.log('Busqueda realizada en',divs.length,'Divs. Agregadas',conteolog,'celdas de',listaceldas.length,'disponibles');
 tablaconencabezado = '';
 tablasinencabezado = '';
-localStorage.setItem(`CSSCustom`,document.getElementById('CustomCSS').value)
+localStorage.setItem(`CSSCustom`,CustomCSSCampo.value)
+ if (localStorage.getItem('lastCSS') === null) {
+  localStorage.setItem('lastCSS',`CSSCustom`);
+ }
 }
 
 function quitarencabezado() {
@@ -465,14 +472,49 @@ arin = arin.split(atributesDivider);
  });
 }
 function eventlisteners() {
+function AgregarListaDeCSS(lista) {
+var optionGenerico = document.createElement('option'),
+opcioneslista = lista.options.length;
+ for (var conteo = 1; conteo < opcioneslista; conteo++) {
+  lista.options[1].remove();
+ }
+ for (var keyname in localStorage) {
+  if (`${keyname}`.slice(0,3) == 'CSS') {
+   var optionEspecifico = optionGenerico.cloneNode();
+   optionEspecifico.text = keyname;
+   optionEspecifico.value = keyname;
+   lista.appendChild(optionEspecifico);
+   console.log(keyname);
+  }
+ }
+}
 const dark = document.getElementById("darkmode");
  dark.addEventListener("mouseup", () => {
   darkchange();
-  });
+ });
+const CSSSaveButton = document.getElementById("CSSSaveButton");
+ CSSSaveButton.addEventListener("mouseup", () => {
+  GuardarPerfilCSS(localStorage.getItem('lastCSS').slice(3))
+ });
 const giradores = document.querySelectorAll(".girar");
  giradores.forEach(button => {
   button.addEventListener("mouseup", () => {
    girar(document.getElementById(button.getAttribute('input1')), document.getElementById(button.getAttribute('input2')));
+  });
+ });
+const closedialogbuttons = document.querySelectorAll('button[closedialog]');
+ closedialogbuttons.forEach(button => {
+  button.addEventListener("click", () => {
+   document.getElementById(button.getAttribute('closedialog')).close();
+  });
+ });
+const opendialogbuttons = document.querySelectorAll('input[opendialog]');
+ opendialogbuttons.forEach(button => {
+  button.addEventListener("click", () => {
+   document.getElementById(button.getAttribute('opendialog')).showModal();
+   if (button.getAttribute('listCSS') !== null) {
+    AgregarListaDeCSS(document.getElementById(button.getAttribute('listCSS')));
+   }
   });
  });
 const sepac = document.getElementById("separadorc");
@@ -491,6 +533,71 @@ const copiaropciones = document.getElementById("copiaropciones");
  copiaropciones.addEventListener("mouseup", () => {
   writeClipboardText(CrearURL());
  });
+const CSSSaveAsForm = document.querySelector('#saveAsCSS');
+ CSSSaveAsForm.addEventListener("submit", (ev) => {
+  ev.preventDefault();
+  const Nombre = document.getElementById('CSSSaveName').value
+  if (Nombre.length > 0) {
+   if (localStorage.getItem(`CSS${Nombre}`) === null) {
+    GuardarPerfilCSS(Nombre);
+    document.getElementById('saveAsCSS').close();
+   }
+   else if (window.confirm(`${Nombre} ya existe ¿desea reemplazarlo?`)) {
+    GuardarPerfilCSS(Nombre);
+    document.getElementById('saveAsCSS').close();
+   }
+  }
+  else {
+  window.alert('No hay nombre') 
+  }
+ });
+const manageCSS = document.querySelector('#manageCSS');
+ manageCSS.addEventListener("submit", (ev) => {
+  ev.preventDefault();
+  var lista = document.getElementById('manageCSSPresets');
+  const indiceSeleccionado = lista.selectedIndex;
+  if (indiceSeleccionado != 0) {
+   if (window.confirm(`¿desea borrar el perfil ${lista.options[indiceSeleccionado].value}?`)) {
+    localStorage.removeItem(lista.options[indiceSeleccionado].value);
+    document.getElementById('manageCSS').close();
+   }
+  }
+  else {
+  window.alert('Selecciona un perfil para borrarlo') 
+  }
+ });
+const loadCSS = document.querySelector('#loadCSS');
+ loadCSS.addEventListener("submit", (ev) => {
+  ev.preventDefault();
+  var lista = document.getElementById('loadCSSPresets');
+  const indiceSeleccionado = lista.selectedIndex;
+  if (indiceSeleccionado != 0) {
+   if (window.confirm(`¿desea cargar el perfil ${lista.options[indiceSeleccionado].value}?`)) {
+    CustomCSSCampo.value = localStorage.getItem(lista.options[indiceSeleccionado].value);
+    document.getElementById('loadCSS').close();
+   }
+  }
+  else {
+  window.alert('Selecciona un perfil para cargarlo') 
+  }
+ });
+}
+
+async function GuardarPerfilCSS(nombre) {
+ try {
+  document.querySelector('.save').style.bottom='2em';
+  await localStorage.setItem(`CSS${nombre}`,CustomCSSCampo.value);
+  document.querySelector('.save p').textContent='Datos guardados exitosamente';
+ }
+ catch (error) {
+  console.log(error.message);
+  document.querySelector('.save p').textContent='Error al guardar datos';
+ }
+ finally {
+  localStorage.setItem('lastCSS',`CSS${nombre}`);
+  document.getElementById('CSSSaveButton').value = `Guardar a ${localStorage.getItem('lastCSS').slice(3)}`;
+  setTimeout(() => {ocultaraviso(document.querySelector('.save'));}, 1500);
+ }
 }
 
 async function writeClipboardText(text) {
@@ -504,12 +611,12 @@ async function writeClipboardText(text) {
   document.querySelector('.copy p').textContent='Error al copiar el texto';
  }
  finally {
-  setTimeout(() => {ocultarcopia();}, 1500);
+  setTimeout(() => {ocultaraviso(document.querySelector('.copy'));}, 1500);
  }
 }
 
-function ocultarcopia() {
-document.querySelector('.copy').style.bottom='-3em';
+function ocultaraviso(elemento) {
+elemento.style.bottom='-3em';
 }
 
 function cambiaretiqueta(ao, inicio) {
@@ -655,6 +762,7 @@ function aplanartexto(TextoaAplanar, caseS = false, accent = false, Textoaplanad
  }
 return Textoaplanado;
 }
+
 const linkbox = document.createElement('div');
 linkbox.className = 'container';
 linkbox.style = "display:inline-block"
@@ -681,4 +789,3 @@ const imgcla = "M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 
 const imgdrk = "M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z";
 
 listaceldas = [];
-
