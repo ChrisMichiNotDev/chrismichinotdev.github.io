@@ -11,6 +11,8 @@
 <BODY>
 <span class="copy" style="bottom:-3em">
 <p>Texto copiado exitosamente</p></span>
+<span class="save" style="bottom:-3em">
+<p>Datos guardados exitosamente</p></span>
 <button id="darkmode" onClick="click()">
 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" style="background-color: transparent;" viewBox="0 0 16 16">
 
@@ -18,6 +20,34 @@
 
 </svg>
 </button>
+<dialog id="saveAsCSS">
+<form method="dialog" class="flexDialogForm" name="saveAsCSS">
+<label for="CSSSaveName">Nombre de CSS</label>
+<input type="text" id="CSSSaveName" placeholder="Nombre">
+<button type="button" value="cancelar" closedialog="saveAsCSS">Cancelar</button>
+<button type="submit" id="CSSSaveAsButton" value="Guardar">Guardar</button>
+</form>
+</dialog>
+<dialog id="manageCSS">
+<form method="dialog" class="flexDialogForm" name="manageCSS">
+<label for="manageCSSPresets">Perfiles de CSS:</label>
+<select id="manageCSSPresets">
+<option value="">Escoge un perfil para borrarlo</option>
+</select>
+<button type="button" value="cancelar" closedialog="manageCSS">Cancelar</button>
+<button type="submit" id="deleteManageCSSButton" value="borrar">Borrar</button>
+</form>
+</dialog>
+<dialog id="loadCSS">
+<form method="dialog" class="flexDialogForm" name="loadCSS">
+<label for="loadCSSPresets">Perfiles de css:</label>
+<select id="loadCSSPresets">
+<option value="">Escoge un perfil para cargarlo</option>
+</select>
+<button type="button" value="cancelar" closedialog="loadCSS">Cancelar</button>
+<button type="submit" id="loadCSSButton" value="cargar">Cargar</button>
+</form>
+</dialog>
 <form name="tableproperties">
 <details>
 <summary>
@@ -80,6 +110,11 @@ font-size: 1rem;
 </path>
 </svg>
 </button>
+<br>
+<input id="CSSSaveAsShow" opendialog="saveAsCSS" type="button" value="Guardar CSS como...">
+<input id="CSSSaveButton" type="button" value="Guardar a CSSCustom">
+<input id="CSSManage" opendialog="manageCSS" listCSS="manageCSSPresets" type="button" value="Administrar CSS">
+<input id="CSSLoad" opendialog="loadCSS" listCSS="loadCSSPresets" type="button" value="Cargar perfil CSS">
 </details>
 <details>
 <summary>
