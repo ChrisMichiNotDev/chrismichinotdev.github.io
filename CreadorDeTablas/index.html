@@ -127,30 +127,43 @@ Opciones avanzadas
 <INPUT type="text" name="reemplazocomas" style="grid-area:d;" placeholder="[wl]" id="rowbreak">
 <label for="colbreak" style="grid-area:gh;">Comando columnbreak</label>
 <INPUT type="text" name="saltodecolumna" style="grid-area:g;" placeholder="[hl]" id="colbreak">
-<label for="tableatributes" style="grid-area:jh;">Atributos de la tabla</label>
-<textarea type="text" name="atributostabla" style="grid-area:j;" placeholder="" id="tableatributes"></textarea>
-<label for="separadorentreatributoynombre" style="grid-area:mh;">Separador entre atributo y nombre de atributo</label>
-<INPUT type="text" name="separadorentreatributoynombre" style="grid-area:m;" placeholder="=" id="separadorentreatributoynombre">
-<label for="separadordeatributos" style="grid-area:ph;">Separador de atributos</label>
-<INPUT type="text" name="separadordeatributos" style="grid-area:p;" placeholder="|" id="separadordeatributos">
+<label for="linebreakcommand" style="grid-area:jh;">Comando de salto de linea</label>
+<INPUT type="text" name="saltodelinea" style="grid-area:j;" placeholder="[br]" id="linebreakcommand">
+<label for="tableatributes" style="grid-area:mh;">Atributos de la tabla</label>
+<textarea type="text" name="atributostabla" style="grid-area:m;" placeholder="" id="tableatributes"></textarea>
+<label for="separadorentreatributoynombre" style="grid-area:ph;">Separador entre atributo y nombre de atributo</label>
+<INPUT type="text" name="separadorentreatributoynombre" style="grid-area:p;" placeholder="=" id="separadorentreatributoynombre">
+<label for="separadordeatributos" style="grid-area:rh;">Separador de atributos</label>
+<INPUT type="text" name="separadordeatributos" style="grid-area:r;" placeholder="|" id="separadordeatributos">
+<label for="rowsofheader" style="grid-area:vh;">Lineas de encabezado</label>
+<INPUT type="text" inputmode="numeric" name="lineasdeencabezado" style="grid-area:v;" placeholder="1" id="rowsofheader">
 </div>
 </details>
+<details>
+<summary>
+Estilizar Filas y Columnas
+</summary>
 <div class="container">
-<INPUT TYPE="button" VALUE="Crear tabla por filas" style="grid-area:ahh;cursor:pointer;" onClick="definirvariables()">
-<INPUT TYPE="button" VALUE="Crear tabla por columnas" style="grid-area:chh;cursor:pointer;" onClick="definirvariables(true)">
-<label for="widthform" style="grid-area:ah;">Longitud</label>
-<label for="heigthform" style="grid-area:ch;">Altura</label>
-<br>
-<INPUT type="text" inputmode="numeric" name="width" style="grid-area:a;" placeholder="2" id="widthform">
-<svg input1="widthform" input2="heigthform" id="girartabla" class="girar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+<label for="estilizarcolumna" style="grid-area:ah;">Columna a estilizar</label>
+<INPUT type="text" inputmode="numeric" name="columna a enlazar" style="grid-area:a;" placeholder="0" id="estilizarcolumna">
+<svg input1="estilizarcolumna" input2="estilizarfila" id="girarestilo" class="girar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
 
 <path d="M1.539,8.001 C2.367,8.001 2.918,7.45 2.918,6.622 L2.914,6.187 C2.914,6.187 2.709,4.954 4.354,4.954 L11.015,5 L11.015,6.759 C11.338,7.081 11.862,7.081 12.185,6.759 L14.758,4.187 C15.08,3.863 15.08,3.339 14.758,3.017 L12.185,0.292 C11.862,-0.03 11.338,-0.03 11.015,0.292 L11.015,2.137 C10.854,2.09 4.562,2.063 4.562,2.063 C0.851,2.063 0.039,4.492 0.039,5.47 L0.039,6.501 C0.039,7.329 0.711,8.001 1.539,8.001 L1.539,8.001 Z">
 </path>
 <path d="M13.5,8.042 C12.672,8.042 12,8.626 12,9.454 L12.002,10.411 C11.957,10.768 11.357,11.001 10.477,11.001 L3.938,11.001 L3.936,9.442 C3.614,9.12 3.09,9.12 2.766,9.442 L0.194,12.014 C-0.128,12.338 -0.128,12.862 0.194,13.184 L2.766,15.756 C3.09,16.08 3.614,16.08 3.936,15.756 L3.938,13.905 L10.477,13.905 C14.188,13.905 15,11.463 15,10.484 L15,9.453 C15,8.626 14.328,8.042 13.5,8.042 L13.5,8.042 Z">
 </path>
 </svg>
-<INPUT type="text" inputmode="numeric" name="height" style="grid-area:c;" placeholder="3" id="heigthform">
+<label for="estilizarfila" style="grid-area:ch;">Fila a estilizar</label>
+<INPUT type="text" inputmode="numeric" name="fila a estilizar" style="grid-area:c;" placeholder="0" id="estilizarfila">
+<label for="textoocelda" style="grid-area:dh;">Estilizar texto o celda</label>
+<select id="textoocelda" style="grid-area:d;">
+<option value="cell">celda</option>
+<option value="text">texto</option>
+</select>
+<label for="atributosfilaycolumna" style="grid-area:fh;">Atributos</label>
+<textarea type="text" name="atributos fila y columna" style="grid-area:f;" placeholder="" id="atributosfilaycolumna"></textarea>
 </div>
+</details>
 <details>
 <summary>
 Opciones de enlaces
@@ -179,6 +192,22 @@ Opciones de enlaces
 <INPUT type="text" name="enlazarpalabras" style="grid-area:z;" placeholder="" id="enlazarpalabras">
 </div>
 </details>
+<div class="container">
+<INPUT TYPE="button" VALUE="Crear tabla por filas" style="grid-area:ahh;cursor:pointer;" onClick="definirvariables()">
+<INPUT TYPE="button" VALUE="Crear tabla por columnas" style="grid-area:chh;cursor:pointer;" onClick="definirvariables(true)">
+<label for="widthform" style="grid-area:ah;">Longitud</label>
+<label for="heigthform" style="grid-area:ch;">Altura</label>
+<br>
+<INPUT type="text" inputmode="numeric" name="width" style="grid-area:a;" placeholder="2" id="widthform">
+<svg input1="widthform" input2="heigthform" id="girartabla" class="girar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+
+<path d="M1.539,8.001 C2.367,8.001 2.918,7.45 2.918,6.622 L2.914,6.187 C2.914,6.187 2.709,4.954 4.354,4.954 L11.015,5 L11.015,6.759 C11.338,7.081 11.862,7.081 12.185,6.759 L14.758,4.187 C15.08,3.863 15.08,3.339 14.758,3.017 L12.185,0.292 C11.862,-0.03 11.338,-0.03 11.015,0.292 L11.015,2.137 C10.854,2.09 4.562,2.063 4.562,2.063 C0.851,2.063 0.039,4.492 0.039,5.47 L0.039,6.501 C0.039,7.329 0.711,8.001 1.539,8.001 L1.539,8.001 Z">
+</path>
+<path d="M13.5,8.042 C12.672,8.042 12,8.626 12,9.454 L12.002,10.411 C11.957,10.768 11.357,11.001 10.477,11.001 L3.938,11.001 L3.936,9.442 C3.614,9.12 3.09,9.12 2.766,9.442 L0.194,12.014 C-0.128,12.338 -0.128,12.862 0.194,13.184 L2.766,15.756 C3.09,16.08 3.614,16.08 3.936,15.756 L3.938,13.905 L10.477,13.905 C14.188,13.905 15,11.463 15,10.484 L15,9.453 C15,8.626 14.328,8.042 13.5,8.042 L13.5,8.042 Z">
+</path>
+</svg>
+<INPUT type="text" inputmode="numeric" name="height" style="grid-area:c;" placeholder="3" id="heigthform">
+</div>
 <label for="separacion">caracteres de separación</label>
 <br>
 <INPUT type="text" name="caracteres de separacion" placeholder="," id="separacion">
