@@ -1,5 +1,5 @@
 var conteo, conteolog, conteoencabezado = 0, conteodark = 0, borradoinicio, borradofin, modocolumna, enlazarFilaLimiteInferior, enlazarFilaLimiteSuperior, sensitivity, caseS = false, accent = false, tablaconencabezado, tablasinencabezado;
-var listaceldas, widthform, heightform, columnaEnlazada, filaEnlazada, borrarr, textotabla, enlazarColumna, enlazarFila, enlaceinicio, enlacefin, ignorarinicioenlace, ignorarfinenlace, enlazarpalabras, separadorc, atributeNameDivider, atributesDivider, markdownify, CustomCSSCampo;
+var listaceldas, widthform, heightform, columnaEnlazada, filaEnlazada, borrarr, textotabla, enlazarColumna, enlazarFila, enlaceinicio, enlacefin, ignorarinicioenlace, ignorarfinenlace, enlazarpalabras, separadorc, atributeNameDivider, atributesDivider, linebreak, rowsofheader, markdownify, CustomCSSCampo, estilizarTextoOCelda, estilizarColumna, estilizarFila;
 var tabla, thead, tbody, trh, trb, td, th, div, divc;
 var ejecutaragregarenlaces, ejecutarenlazarpalabras;
 //Definiciónes
@@ -28,12 +28,15 @@ var idYvalor = ele.split('='),elemento=document.getElementById(idYvalor[0]);
  if (elemento !== null && elemento.type == 'text' || elemento !== null && elemento.type == 'textarea') {
   elemento.value = decodeURIComponent(idYvalor[1]);
  }
+ if (elemento !== null && elemento.tagName == 'SELECT') {
+  elemento.selectedIndex = decodeURIComponent(idYvalor[1]);
+ }
 });
 history.replaceState(null, "", document.location.pathname);
 }
 
 function CrearURL() {
-var allInputs = document.querySelectorAll('form[name="tableproperties"] input[type="text"], form[name="tableproperties"] textarea'),
+var allInputs = document.querySelectorAll('form[name="tableproperties"] input[type="text"], form[name="tableproperties"] textarea, form[name="tableproperties"] select'),
 inputsConTexto = []
 basePath = document.location.origin + document.location.pathname,
 parametros = '?',
@@ -41,7 +44,12 @@ final='';
  allInputs.forEach(input => {
   if (input.value != '' && input.id != 'textotabla') {
    inputsConTexto.push(input);
-   parametros = `${parametros}${input.id}=${encodeURIComponent(input.value)}&`;
+   if (input.tagName == 'SELECT' && input.selectedIndex != 0) {
+    parametros = `${parametros}${input.id}=${encodeURIComponent(input.selectedIndex)}&`;
+   }
+   else {
+    parametros = `${parametros}${input.id}=${encodeURIComponent(input.value)}&`;
+   }
   }
  });
 final = basePath + parametros.slice(0,-1);
@@ -74,6 +82,12 @@ alineamiento = vloph('alineamiento');
 atributeNameDivider = vloph('separadorentreatributoynombre');
 atributesDivider = vloph('separadordeatributos');
 markdownify = document.getElementById('markdownify').checked;
+linebreak = vloph('linebreakcommand');
+rowsofheader = Number(vloph('rowsofheader'));
+estilizarTextoOCelda = vloph('textoocelda');
+estilizarColumna = Number(vloph('estilizarcolumna'))-1;
+estilizarFila = Number(vloph('estilizarfila'))-1;
+atributosfilaycolumna = vloph('atributosfilaycolumna').split(atributesDivider);
 textotabla = document.getElementById('textotabla');
 determinarenlace();
  if (enlazarpalabras.length == 1 && enlazarpalabras[0] == '') {
@@ -102,13 +116,15 @@ trb = document.createElement('tr');
 td = document.createElement('td');
 divc = document.createElement('div');
 td.appendChild(divc);
- for (var conteodivenc = 0; conteodivenc < widthform; conteodivenc++) {
+ for (var conteoDIV = 0; conteoDIV < widthform; conteoDIV++) {
   trh.appendChild(th.cloneNode(true));
   trb.appendChild(td.cloneNode(true));
  }
 //Crear tabla
-thead.appendChild(trh);
- for (var conteotrcue = 0; conteotrcue < heightform-1; conteotrcue++) {
+ for (var conteoTREncabezado = 0; conteoTREncabezado < rowsofheader; conteoTREncabezado++) {
+  thead.appendChild(trh.cloneNode(true));
+ }
+ for (var conteoTRcuerpo = 0; conteoTRcuerpo < heightform-rowsofheader; conteoTRcuerpo++) {
   tbody.appendChild(trb.cloneNode(true));
  }
 tabla.appendChild(thead);
@@ -122,6 +138,26 @@ if (atributo.length > 1) {
  document.querySelector('table').setAttribute(atributo[0],atributo[1])
 }
 });
+/*estilizar filas*/
+ if (estilizarFila <= widthform && estilizarFila >= 0) {
+  tabla.querySelectorAll('tr')[estilizarFila].querySelectorAll('*:not(div)').forEach(elemento => {
+   var celda = elemento;
+   if (estilizarTextoOCelda == 'text') {
+    celda = celda.firstElementChild;
+   }
+   agregarListaDeAtributos(celda,atributosfilaycolumna);
+  });
+ }
+/*estilizar columnas*/
+ if (estilizarColumna <= heightform && estilizarColumna >= 0) {
+  tabla.querySelectorAll('tr').forEach(elemento => {
+   var celda = elemento.children[estilizarColumna];
+    if (estilizarTextoOCelda == 'text') {
+     celda = celda.firstElementChild;
+    }
+   agregarListaDeAtributos(celda,atributosfilaycolumna);
+  });
+ }
 agregarceldas();
 document.body.appendChild(linkbox);
 }
@@ -145,15 +181,13 @@ const divs = document.querySelectorAll('div:not(.container)');
 if (element.isConnected) {
    indiceAtributoCell = listaceldas[conteo].indexOf('{cell');
    if (indiceAtributoCell != -1) {
-    var indiceAtributoCellFin = listaceldas[conteo].indexOf('}', indiceAtributoCell)
-    agregarAtributos(element, conteo, indiceAtributoCell, indiceAtributoCellFin)
-    listaceldas[conteo] = listaceldas[conteo].slice('0',indiceAtributoCell) + listaceldas[conteo].slice(indiceAtributoCellFin+1)
+    var indiceAtributoCellFin = listaceldas[conteo].indexOf(']}', indiceAtributoCell);
+    agregarAtributos(element, conteo, indiceAtributoCell, indiceAtributoCellFin);
    }
    indiceAtributoText = listaceldas[conteo].indexOf('{text');
    if (indiceAtributoText != -1) {
-    var indiceAtributoTextFin = listaceldas[conteo].indexOf('}', indiceAtributoCell)
-    agregarAtributos(element, conteo, indiceAtributoText, indiceAtributoTextFin)
-    listaceldas[conteo] = listaceldas[conteo].slice('0',indiceAtributoText) + listaceldas[conteo].slice(indiceAtributoTextFin+1)
+    var indiceAtributoTextFin = listaceldas[conteo].indexOf(']}', indiceAtributoCell);
+    agregarAtributos(element, conteo, indiceAtributoText, indiceAtributoTextFin);
    }
    if (ejecutaragregarenlaces) {
     Enlazar();
@@ -169,6 +203,7 @@ if (element.isConnected) {
    celda = listaceldas[conteo];
    conteo++;
    element.innerText = celda;
+element.innerHTML = element.innerHTML.replaceAll(linebreak,'<br>');
    if (markdownify) {
     agregarMarkdown(element);
    }
@@ -182,15 +217,13 @@ if (element.isConnected) {
     conteocol = conteo+sumaaltura+rsaltura;
     indiceAtributoCell = listaceldas[conteocol].indexOf('{cell');
     if (indiceAtributoCell != -1) {
-     var indiceAtributoCellFin = listaceldas[conteocol].indexOf('}', indiceAtributoCell)
-     agregarAtributos(element, conteocol, indiceAtributoCell, indiceAtributoCellFin)
-     listaceldas[conteocol] = listaceldas[conteocol].slice('0',indiceAtributoCell) + listaceldas[conteocol].slice(indiceAtributoCellFin+1)
+     var indiceAtributoCellFin = listaceldas[conteocol].indexOf(']}', indiceAtributoCell);
+     agregarAtributos(element, conteocol, indiceAtributoCell, indiceAtributoCellFin);
     }
     indiceAtributoText = listaceldas[conteocol].indexOf('{text');
     if (indiceAtributoText != -1) {
-     var indiceAtributoTextFin = listaceldas[conteocol].indexOf('}', indiceAtributoCell)
-     agregarAtributos(element, conteocol, indiceAtributoText, indiceAtributoTextFin)
-     listaceldas[conteocol] = listaceldas[conteocol].slice('0',indiceAtributoText) + listaceldas[conteocol].slice(indiceAtributoTextFin+1)
+     var indiceAtributoTextFin = listaceldas[conteocol].indexOf(']}', indiceAtributoCell);
+     agregarAtributos(element, conteocol, indiceAtributoText, indiceAtributoTextFin);
     }
     if (ejecutaragregarenlaces) {
      Enlazar(conteocol);
@@ -203,15 +236,13 @@ if (element.isConnected) {
    else if (conteodiv == 0) {
     indiceAtributoCell = listaceldas[conteo].indexOf('{cell');
     if (indiceAtributoCell != -1) {
-     var indiceAtributoCellFin = listaceldas[conteo].indexOf('}', indiceAtributoCell)
-     agregarAtributos(element, conteo, indiceAtributoCell, indiceAtributoCellFin)
-     listaceldas[conteo] = listaceldas[conteo].slice('0',indiceAtributoCell) + listaceldas[conteo].slice(indiceAtributoCellFin+1)
+     var indiceAtributoCellFin = listaceldas[conteo].indexOf(']}', indiceAtributoCell);
+     agregarAtributos(element, conteo, indiceAtributoCell, indiceAtributoCellFin);
     }
     indiceAtributoText = listaceldas[conteo].indexOf('{text');
     if (indiceAtributoText != -1) {
-     var indiceAtributoTextFin = listaceldas[conteo].indexOf('}', indiceAtributoCell)
-     agregarAtributos(element, conteo, indiceAtributoText, indiceAtributoTextFin)
-     listaceldas[conteo] = listaceldas[conteo].slice('0',indiceAtributoText) + listaceldas[conteo].slice(indiceAtributoTextFin+1)
+     var indiceAtributoTextFin = listaceldas[conteo].indexOf(']}', indiceAtributoCell);
+     agregarAtributos(element, conteo, indiceAtributoText, indiceAtributoTextFin);
     }
     if (ejecutaragregarenlaces) {
      Enlazar();
@@ -227,6 +258,7 @@ if (element.isConnected) {
     element.style = currentstyle + align;
    }
    element.innerText = celda;
+   element.innerHTML = element.innerHTML.replaceAll(linebreak,'<br>');
    if (markdownify) {
     agregarMarkdown(element);
    }
@@ -258,8 +290,8 @@ function quitarencabezado() {
  if (conteoencabezado == 0) {
   if (tablaconencabezado == '') {
    tablaconencabezado = textotabla.value;
-   textotabla.value = textotabla.value.replaceAll('\n<tbody>', '').replaceAll('\n<thead>', '\n<tbody>').replaceAll('\n</thead>', '').replaceAll('<th>', '<td>').replaceAll('</th>', '</td>');
-   tablasinencabezado = textotabla.value
+   textotabla.value = textotabla.value.replaceAll('\n</th>\n</tr>\n</thead>\n<tbody>','\n</td>\n</tr>').replaceAll('\n<thead>','\n<tbody>').replaceAll('\n</th>\n<th','\n</td>\n<td').replaceAll('\n<tr>\n<th','\n<tr>\n<td');
+   tablasinencabezado = textotabla.value;
   }
   else {
    textotabla.value = tablasinencabezado;
@@ -451,7 +483,7 @@ elemento.innerHTML = outer;
 }
 
 function agregarAtributos(elemento, indice = conteo, puntoinicio, puntofin) {
-arin = listaceldas[indice].slice(puntoinicio, puntofin-1);
+var arin = listaceldas[indice].slice(puntoinicio, puntofin);
  if (arin.indexOf('{cell') == 0) {
   arin = arin.slice('cell'.length+2)
   elemento = elemento.parentElement
@@ -459,10 +491,17 @@ arin = listaceldas[indice].slice(puntoinicio, puntofin-1);
  if (arin.indexOf('{text') == 0) {
   arin = arin.slice('text'.length+2)
  }
-arin = arin.split(atributesDivider);
- arin.forEach(ele => {
- var atributo = ele.split(atributeNameDivider);
- elemento.setAttribute(atributo[0],atributo[1]);
+ agregarListaDeAtributos(elemento, arin.split(atributesDivider));
+
+listaceldas[indice] = listaceldas[indice].slice('0',puntoinicio) + listaceldas[indice].slice(puntofin+2);
+}
+
+function agregarListaDeAtributos(elemento, listaDeAtributos) {
+ listaDeAtributos.forEach(ele => {
+  var atributo = ele.split(atributeNameDivider);
+  if (atributo.length > 1) {
+   elemento.setAttribute(atributo[0], atributo[1]);
+  }
   if (atributo[0].toLowerCase() == 'colspan' && elemento.tagName != 'DIV') {
    var tr = elemento.parentElement, repeticiones = Number(atributo[1])-1;
    for (var count = 0; count < repeticiones;count++) {
@@ -471,6 +510,7 @@ arin = arin.split(atributesDivider);
   }
  });
 }
+
 function eventlisteners() {
 function AgregarListaDeCSS(lista) {
 var optionGenerico = document.createElement('option'),
