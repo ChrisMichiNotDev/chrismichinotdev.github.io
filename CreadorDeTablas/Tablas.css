@@ -2,6 +2,19 @@ html {
     font-size: clamp(16px, 1.172vw, 32px);
     font-family: Segoe UI,BlinkMacSystemFont,-apple-system,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
 }
+pre.table-information {
+  margin: 0;
+}
+span.flexspan {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+}
+input[type="checkbox"] {
+    transform: scale(2);
+    margin: 0.5em;
+}
 .copy, .save {
   position: fixed;
   bottom: 2em;
@@ -40,7 +53,7 @@ details[open] {
 }
 .girar {
   grid-area:b;
-  margin:0px 10px;
+  align-self: center;
   cursor:pointer;
 }
 .container {
@@ -67,9 +80,19 @@ details[open] {
     "y y y"
     "zh zh zh"
     "z z z";
+  grid-template-columns: 12.313em 2.75em 12.313em;
   justify-content: start;
-  align-items: center;
+  align-items: start;
   justify-items: center;
+}
+
+.container + .container {
+    margin-top: 0.5em;
+}
+
+.container label {
+    text-align: center;
+    align-self: end;
 }
 
 input, textarea, select, label, button{
