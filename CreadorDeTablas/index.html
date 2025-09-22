@@ -49,6 +49,7 @@
 </form>
 </dialog>
 <form name="tableproperties">
+<input type="checkbox" id="modocolumna" style="display: none;">
 <details>
 <summary>
 CSS
@@ -121,22 +122,36 @@ font-size: 1rem;
 Opciones avanzadas
 </summary>
 <div class="container">
-<label for="separadorc" style="grid-area:ah;">Carácter de separación para todos los campos separados por comas</label>
+<label for="separadorc" style="grid-area:ah;">Separador para campos separados por comas</label>
 <INPUT type="text" name="reemplazocomas" style="grid-area:a;" placeholder="," id="separadorc">
-<label for="rowbreak" style="grid-area:dh;">Comando rowbreak</label>
-<INPUT type="text" name="reemplazocomas" style="grid-area:d;" placeholder="[wl]" id="rowbreak">
-<label for="colbreak" style="grid-area:gh;">Comando columnbreak</label>
-<INPUT type="text" name="saltodecolumna" style="grid-area:g;" placeholder="[hl]" id="colbreak">
-<label for="linebreakcommand" style="grid-area:jh;">Comando de salto de linea</label>
-<INPUT type="text" name="saltodelinea" style="grid-area:j;" placeholder="[br]" id="linebreakcommand">
-<label for="tableatributes" style="grid-area:mh;">Atributos de la tabla</label>
-<textarea type="text" name="atributostabla" style="grid-area:m;" placeholder="" id="tableatributes"></textarea>
-<label for="separadorentreatributoynombre" style="grid-area:ph;">Separador entre atributo y nombre de atributo</label>
-<INPUT type="text" name="separadorentreatributoynombre" style="grid-area:p;" placeholder="=" id="separadorentreatributoynombre">
-<label for="separadordeatributos" style="grid-area:rh;">Separador de atributos</label>
-<INPUT type="text" name="separadordeatributos" style="grid-area:r;" placeholder="|" id="separadordeatributos">
-<label for="rowsofheader" style="grid-area:vh;">Lineas de encabezado</label>
-<INPUT type="text" inputmode="numeric" name="lineasdeencabezado" style="grid-area:v;" placeholder="1" id="rowsofheader">
+<label for="rowbreak" style="grid-area:ch;">Comando rowbreak</label>
+<INPUT type="text" name="reemplazocomas" style="grid-area:c;" placeholder="[wl]" id="rowbreak">
+<label for="colbreak" style="grid-area:dh;">Comando columnbreak</label>
+<INPUT type="text" name="saltodecolumna" style="grid-area:d;" placeholder="[hl]" id="colbreak">
+<label for="linebreakcommand" style="grid-area:fh;">Comando de salto de linea</label>
+<INPUT type="text" name="saltodelinea" style="grid-area:f;" placeholder="[br]" id="linebreakcommand">
+<label for="tableatributes" style="grid-area:gh;">Atributos de la tabla</label>
+<textarea type="text" name="atributostabla" style="grid-area:g;" placeholder="" id="tableatributes"></textarea>
+<label for="separadorentreatributoynombre" style="grid-area:ih;">Separador entre atributo y nombre de atributo</label>
+<INPUT type="text" name="separadorentreatributoynombre" style="grid-area:i;" placeholder="=" id="separadorentreatributoynombre">
+<label for="separadordeatributos" style="grid-area:jh;">Separador de atributos</label>
+<INPUT type="text" name="separadordeatributos" style="grid-area:j;" placeholder="|" id="separadordeatributos">
+<label for="rowsofheader" style="grid-area:lh;">Filas de encabezado</label>
+<INPUT type="text" inputmode="numeric" name="lineasdeencabezado" style="grid-area:l;" placeholder="1" id="rowsofheader">
+</div>
+<div class="container">
+<label for="minWidth" style="grid-area:ah;">Columnas minima</label>
+<label for="minHeight" style="grid-area:ch;">Filas minima</label>
+<br>
+<input type="text" inputmode="numeric" name="minWidth" style="grid-area:a;" placeholder="1" id="minWidth">
+<svg input1="minWidth" input2="minHeight" id="girartabla" class="girar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+
+<path d="M1.539,8.001 C2.367,8.001 2.918,7.45 2.918,6.622 L2.914,6.187 C2.914,6.187 2.709,4.954 4.354,4.954 L11.015,5 L11.015,6.759 C11.338,7.081 11.862,7.081 12.185,6.759 L14.758,4.187 C15.08,3.863 15.08,3.339 14.758,3.017 L12.185,0.292 C11.862,-0.03 11.338,-0.03 11.015,0.292 L11.015,2.137 C10.854,2.09 4.562,2.063 4.562,2.063 C0.851,2.063 0.039,4.492 0.039,5.47 L0.039,6.501 C0.039,7.329 0.711,8.001 1.539,8.001 L1.539,8.001 Z">
+</path>
+<path d="M13.5,8.042 C12.672,8.042 12,8.626 12,9.454 L12.002,10.411 C11.957,10.768 11.357,11.001 10.477,11.001 L3.938,11.001 L3.936,9.442 C3.614,9.12 3.09,9.12 2.766,9.442 L0.194,12.014 C-0.128,12.338 -0.128,12.862 0.194,13.184 L2.766,15.756 C3.09,16.08 3.614,16.08 3.936,15.756 L3.938,13.905 L10.477,13.905 C14.188,13.905 15,11.463 15,10.484 L15,9.453 C15,8.626 14.328,8.042 13.5,8.042 L13.5,8.042 Z">
+</path>
+</svg>
+<input type="text" inputmode="numeric" name="minHeight" style="grid-area:c;" placeholder="1" id="minHeight">
 </div>
 </details>
 <details>
@@ -144,7 +159,7 @@ Opciones avanzadas
 Estilizar Filas y Columnas
 </summary>
 <div class="container">
-<label for="estilizarcolumna" style="grid-area:ah;">Columna a estilizar</label>
+<label for="estilizarcolumna" style="grid-area:ah;" commadivided ao="a">Columnas a estilizar (separadas por comas)</label>
 <INPUT type="text" inputmode="numeric" name="columna a enlazar" style="grid-area:a;" placeholder="0" id="estilizarcolumna">
 <svg input1="estilizarcolumna" input2="estilizarfila" id="girarestilo" class="girar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
 
@@ -153,7 +168,7 @@ Estilizar Filas y Columnas
 <path d="M13.5,8.042 C12.672,8.042 12,8.626 12,9.454 L12.002,10.411 C11.957,10.768 11.357,11.001 10.477,11.001 L3.938,11.001 L3.936,9.442 C3.614,9.12 3.09,9.12 2.766,9.442 L0.194,12.014 C-0.128,12.338 -0.128,12.862 0.194,13.184 L2.766,15.756 C3.09,16.08 3.614,16.08 3.936,15.756 L3.938,13.905 L10.477,13.905 C14.188,13.905 15,11.463 15,10.484 L15,9.453 C15,8.626 14.328,8.042 13.5,8.042 L13.5,8.042 Z">
 </path>
 </svg>
-<label for="estilizarfila" style="grid-area:ch;">Fila a estilizar</label>
+<label for="estilizarfila" style="grid-area:ch;" commadivided ao="a">Filas a estilizar (separadas por comas)</label>
 <INPUT type="text" inputmode="numeric" name="fila a estilizar" style="grid-area:c;" placeholder="0" id="estilizarfila">
 <label for="textoocelda" style="grid-area:dh;">Estilizar texto o celda</label>
 <select id="textoocelda" style="grid-area:d;">
@@ -163,14 +178,17 @@ Estilizar Filas y Columnas
 <label for="atributosfilaycolumna" style="grid-area:fh;">Atributos</label>
 <textarea type="text" name="atributos fila y columna" style="grid-area:f;" placeholder="" id="atributosfilaycolumna"></textarea>
 </div>
+<div class="container">
+<input style="grid-area:b;" type="button" id="estilizarButton" value="Estilizar Columnas Y Filas">
+</div>
 </details>
 <details>
 <summary>
 Opciones de enlaces
 </summary>
 <div class="container">
-<label for="enlazarcol" style="grid-area:ah;">Columna a enlazar</label>
-<label for="enlazarfil" style="grid-area:ch;">Fila a enlazar</label>
+<label for="enlazarcol" style="grid-area:ah;" commadivided ao="a">Columnas a enlazar (separadas por comas)</label>
+<label for="enlazarfil" style="grid-area:ch;" commadivided ao="a">Filas a enlazar (separadas por comas)</label>
 <INPUT type="text" inputmode="numeric" name="columna a enlazar" style="grid-area:a;" placeholder="Pensado para FeatherWiki" id="enlazarcol">
 <svg input1="enlazarcol" input2="enlazarfil" id="girarenlaces" class="girar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
 
@@ -188,15 +206,15 @@ Opciones de enlaces
 <label for="ignorarfinenlace" style="grid-area:ih;">Excluir del fin del enlace</label>
 <INPUT type="text" name="ignorarinicio" style="grid-area:g;" placeholder="*" id="ignorarinicioenlace">
 <INPUT type="text" name="ignorarfin" style="grid-area:i;" placeholder="*" id="ignorarfinenlace">
-<label for="enlazarpalabras" style="grid-area:zh;">Palabras a enlazar (separadas por comas)</label>
+<label for="enlazarpalabras" style="grid-area:zh;" commadivided ao="a">Palabras a enlazar (separadas por comas)</label>
 <INPUT type="text" name="enlazarpalabras" style="grid-area:z;" placeholder="" id="enlazarpalabras">
 </div>
 </details>
 <div class="container">
-<INPUT TYPE="button" VALUE="Crear tabla por filas" style="grid-area:ahh;cursor:pointer;" onClick="definirvariables()">
-<INPUT TYPE="button" VALUE="Crear tabla por columnas" style="grid-area:chh;cursor:pointer;" onClick="definirvariables(true)">
-<label for="widthform" style="grid-area:ah;">Longitud</label>
-<label for="heigthform" style="grid-area:ch;">Altura</label>
+<INPUT TYPE="button" VALUE="Crear tabla por filas" style="grid-area:ahh;cursor:pointer;" id="modoFila">
+<INPUT TYPE="button" VALUE="Crear tabla por columnas" style="grid-area:chh;cursor:pointer;" id="modoColumna">
+<label for="widthform" style="grid-area:ah;">Columnas</label>
+<label for="heigthform" style="grid-area:ch;">Filas</label>
 <br>
 <INPUT type="text" inputmode="numeric" name="width" style="grid-area:a;" placeholder="2" id="widthform">
 <svg input1="widthform" input2="heigthform" id="girartabla" class="girar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
@@ -208,11 +226,11 @@ Opciones de enlaces
 </svg>
 <INPUT type="text" inputmode="numeric" name="height" style="grid-area:c;" placeholder="3" id="heigthform">
 </div>
-<label for="separacion">caracteres de separación</label>
+<label for="separacion" commadivided ao="o">caracteres de separación (separados por comas)</label>
 <br>
 <INPUT type="text" name="caracteres de separacion" placeholder="," id="separacion">
 <br>
-<label for="borrar">Caracteres a borrar del inicio (separados por comas)</label>
+<label for="borrar" commadivided ao="o">Caracteres a borrar del inicio (separados por comas)</label>
 <br>
 <INPUT type="text" name="Caracteres a borrar del inicio" placeholder="^,~" id="borrar">
 <br>
@@ -235,11 +253,19 @@ Opciones de enlaces
 <label for="textoarray">Texto de las celdas</label>
 <br>
 <textarea placeholder="^~~^Hello,\n^~~^World,\n^~~^Hola,\n^~~^Mundo,\n^~~^Saluton,\n^~~^Mondo" id="textoarray"></textarea>
-<br>
+<pre class="table-information" id="numberofcells"></pre>
+<span class="flexspan">
 <input type="button" value="Quitar Encabezado" onClick="quitarencabezado()" id="encabezado">
-<input type="checkbox" id="markdownify" checked style="transform: scale(2);margin: 1em 0.5em;">
+<span class="flexspan">
+<input type="checkbox" id="markdownify" checked>
 <label for="markdownify" style="margin-right:0.5em;">Convertir Markdown a HTML</label>
+</span>
 <input type="button" value="Copiar URL con las opciónes" id="copiaropciones">
+<span class="flexspan">
+<input type="checkbox" id="CSSinURL">
+<label for="CSSinURL" style="margin-right:0.5em;">Añadir CSS personalizado en la URL</label>
+</span>
+</span>
 </FORM>
 <label for="textotabla">Código HTML de la tabla</label>
 <br>
@@ -250,6 +276,7 @@ Opciones de enlaces
 </path>
 </svg>
 </button>
+<pre class="table-information" id="tabledimensions"></pre>
 <!--< class="se-table-size-auto"p>inspeccionar > seleccionar elemento table  > copiar HTML externo > pegar en vista de código de sun editor > salir de vista de código</p>-->
 </BODY>
 </HTML>
