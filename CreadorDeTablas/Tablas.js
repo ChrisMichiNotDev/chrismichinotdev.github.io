@@ -212,7 +212,7 @@ cambiarPropiedad(propiedades.estilizarColumna);
 cambiarPropiedad(propiedades.estilizarFila);
 /*estilizar filas*/
  propiedades.estilizarFila.value.forEach(Fila => {
-  if (Fila <= widthform && Fila >= 0) {
+  if (Fila <= heightform && Fila >= 0) {
    if (tabla.querySelectorAll('tr')[Fila]!=undefined) {
     tabla.querySelectorAll('tr')[Fila].querySelectorAll('*:not(div)').forEach(elemento => {
      var celda = elemento;
@@ -226,7 +226,7 @@ cambiarPropiedad(propiedades.estilizarFila);
  });
 /*estilizar columnas*/
  propiedades.estilizarColumna.value.forEach(Columna => {
-  if (Columna <= heightform && Columna >= 0) {
+  if (Columna <= widthform && Columna >= 0) {
    tabla.querySelectorAll('tr').forEach(elemento => {
     var celda = elemento.children[Columna];
     if (celda != undefined) {
@@ -253,7 +253,7 @@ function agregarceldas() {
   }
   indiceAtributoText = listaceldas[conteo].indexOf('{text');
   if (indiceAtributoText != -1) {
-   var indiceAtributoTextFin = listaceldas[conteo].indexOf(']}', indiceAtributoCell);
+   var indiceAtributoTextFin = listaceldas[conteo].indexOf(']}', indiceAtributoText);
    agregarAtributos(element, conteo, indiceAtributoText, indiceAtributoTextFin);
   }
   if (ejecutaragregarenlaces) {
@@ -457,7 +457,6 @@ conteolog = 0;
  }
  if (evitarRepeticiones.postAgregarCeldas == false) {
   textotabla.value = document.querySelector('table').outerHTML.replaceAll('>', '>\n').replaceAll('</div>', '\n</div>');
-  textotabla.style = 'width:400px;height:250px;';
   conteoencabezado = 0;
   document.getElementById("tabledimensions").textContent=`Dimensiones de la tabla:${widthform}x${heightform}`
   console.log('Agregadas',conteo,'celdas de',listaceldas.length,'disponibles');
@@ -869,7 +868,7 @@ const dark = document.getElementById("darkmode");
  });
 const CSSSaveButton = document.getElementById("CSSSaveButton");
  CSSSaveButton.addEventListener("mouseup", () => {
-  GuardarPerfilCSS(localStorage.getItem('lastCSS').slice(3))
+  crearAviso('Guardando datos', 'success', 'Datos guardados exitosamente', 'Error al guardar datos', 'GuardarPerfilCSS', localStorage.getItem('lastCSS').slice(3));
  });
 const giradores = document.querySelectorAll(".girar");
  giradores.forEach(button => {
@@ -902,12 +901,12 @@ const sepac = document.getElementById("separadorc");
 const copybuttons = document.querySelectorAll('.copybutton');
  copybuttons.forEach(
   button => {button.addEventListener("mouseup", () => {
-   writeClipboardText(document.getElementById(button.getAttribute('inputcopiar')).value);
+   crearAviso('Copiando texto', 'success', 'Texto copiado exitosamente', 'Error al copiar el texto', 'writeClipboardText',document.getElementById(button.getAttribute('inputcopiar')).value);
   });
  });
 const copiaropciones = document.getElementById("copiaropciones");
  copiaropciones.addEventListener("mouseup", () => {
-  writeClipboardText(CrearURL());
+  crearAviso('Copiando texto', 'success', 'Texto copiado exitosamente', 'Error al copiar el texto', 'writeClipboardText', CrearURL());
  });
 const CSSSaveAsForm = document.querySelector('#saveAsCSS');
  CSSSaveAsForm.addEventListener("submit", (ev) => {
@@ -915,11 +914,11 @@ const CSSSaveAsForm = document.querySelector('#saveAsCSS');
   const Nombre = document.getElementById('CSSSaveName').value
   if (Nombre.length > 0) {
    if (localStorage.getItem(`CSS${Nombre}`) === null) {
-    GuardarPerfilCSS(Nombre);
+    crearAviso('Guardando datos', 'success', 'Datos guardados exitosamente', 'Error al guardar datos', 'GuardarPerfilCSS',Nombre);
     document.getElementById('saveAsCSS').close();
    }
    else if (window.confirm(`${Nombre} ya existe ¿desea reemplazarlo?`)) {
-    GuardarPerfilCSS(Nombre);
+    crearAviso('Guardando datos', 'success', 'Datos guardados exitosamente', 'Error al guardar datos', 'GuardarPerfilCSS',Nombre);
     document.getElementById('saveAsCSS').close();
    }
   }
@@ -962,44 +961,64 @@ const loadCSS = document.querySelector('#loadCSS');
 }
 
 function updateLastCSS(keyname) {
-localStorage.setItem('lastCSS',keyname);
-document.getElementById('CSSSaveButton').value = `Guardar a ${localStorage.getItem('lastCSS').slice(3)}`;
+ localStorage.setItem('lastCSS',keyname);
+ document.getElementById('CSSSaveButton').value = `Guardar a ${localStorage.getItem('lastCSS').slice(3)}`;
 }
 
-
-async function GuardarPerfilCSS(nombre) {
- try {
-  document.querySelector('.save').style.bottom='2em';
-  await localStorage.setItem(`CSS${nombre}`,CustomCSSCampo.value);
-  document.querySelector('.save p').textContent='Datos guardados exitosamente';
- }
- catch (error) {
-  console.log(error.message);
-  document.querySelector('.save p').textContent='Error al guardar datos';
- }
- finally {
-  updateLastCSS(`CSS${nombre}`)
-  setTimeout(() => {ocultaraviso(document.querySelector('.save'));}, 1500);
- }
-}
-
-async function writeClipboardText(text) {
- try {
-  document.querySelector('.copy').style.bottom='2em';
+const messageFunctions = {
+ Nada: function(a) {
+  console.log('función Nada', `${a}`);
+ },
+ writeClipboardText: async function(text) {
   await navigator.clipboard.writeText(text);
-  document.querySelector('.copy p').textContent='Texto copiado exitosamente';
+ },
+ GuardarPerfilCSS: async function(nombre) {
+  await localStorage.setItem(`CSS${nombre}`,CustomCSSCampo.value);
+  updateLastCSS(`CSS${nombre}`);
+ }
+}
+
+const avisoBase = document.createElement('span');
+avisoBase.classList.add('message');
+avisoBase.appendChild(document.createElement('p'));
+
+async function crearAviso(TextoBase = '', Clase = '', TextoExito = '', TextoError = '', Accion = 'Nada', ParametrosAccion = '') {
+var aviso = avisoBase.cloneNode(true);
+aviso.firstElementChild.textContent = TextoBase;
+document.body.insertBefore(aviso,document.body.firstChild);
+ try {
+setTimeout(() => {aviso.style.bottom = '2em';}, 10);
+  if (Array.isArray(ParametrosAccion)) {
+   await messageFunctions[Accion](...ParametrosAccion);
+//await navigator.clipboard.writeText(text);
+  }
+  else if (typeof ParametrosAccion == "string") {
+   await messageFunctions[Accion](ParametrosAccion);
+//await navigator.clipboard.writeText(text);
+  }
+  if (Clase != '') {
+   aviso.classList.add(Clase);
+  }
+  if (TextoExito != '') {
+   aviso.firstElementChild.textContent = TextoExito;
+  }
  }
  catch (error) {
-  console.log(error.message);
-  document.querySelector('.copy p').textContent='Error al copiar el texto';
+  console.error(error.message);
+  aviso.firstElementChild.textContent=TextoError;
+  aviso.classList.add('error');
  }
  finally {
-  setTimeout(() => {ocultaraviso(document.querySelector('.copy'));}, 1500);
+  setTimeout(() => {ocultaraviso(aviso);}, 1500);
  }
 }
 
 function ocultaraviso(elemento) {
+ function borrarAviso(elemento) {
+  elemento.remove();
+ }
 elemento.style.bottom='-3em';
+setTimeout(() => {borrarAviso(elemento);}, 500);
 }
 
 function cambiaretiqueta(ao, inicio) {
@@ -1117,7 +1136,7 @@ return Textoaplanado;
 }
 
 const linkbox = document.createElement('div');
-linkbox.className = 'container';
+linkbox.className = 'linkBox';
 linkbox.style = "display:inline-block"
 
 const creditos = document.createElement('a');
@@ -1127,7 +1146,7 @@ linkbox.appendChild(creditos);
 
 const spaceial = document.createElement('p');
 spaceial.textContent='|';
-spaceial.style="margin: 0 0.5em;font-size:20px;display:inline-block;"
+spaceial.style="margin: 0 0.5em;font-size:1.25em;display:inline-block;"
 linkbox.appendChild(spaceial.cloneNode(true));
 
 const ejemplos = document.createElement('a');
