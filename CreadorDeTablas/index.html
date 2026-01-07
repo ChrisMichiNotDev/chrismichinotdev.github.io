@@ -1,20 +1,19 @@
 <!DOCTYPE html>
-<HTML lang="en-US" class="oscuro">
-<HEAD>
+<html lang="en-US" class="oscuro">
+<head>
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <meta charset="utf-8">
 <link rel="shortcut icon" href="./favicon.png">
 <link rel="stylesheet" charset="utf-8" href="./Tablas.css">
-<SCRIPT src="./Tablas.js" charset="utf-8"></SCRIPT>
-<TITLE>Creador de Tablas</TITLE>
+<script src="./Tablas.js" charset="utf-8"></script>
+<title>Creador de Tablas</title>
 
-</HEAD>
-<BODY>
-<span class="copy" style="bottom:-3em">
-<p>Texto copiado exitosamente</p></span>
-<span class="save" style="bottom:-3em">
-<p>Datos guardados exitosamente</p></span>
+</head>
+<body>
 <button id="darkmode" onClick="click()">
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" style="background-color: transparent;" viewBox="0 0 16 16">
+<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="background-color: transparent;" viewBox="0 0 16 16">
 
 <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
 
@@ -106,7 +105,7 @@ font-size: 1rem;
 }
 </textarea>
 <button class="copybutton" type="button" id="copiarcss" inputcopiar="CustomCSS" title="Copiar CSS personalizado al portapapeles">
-<svg xmlns="http://www.w3.org/2000/svg" fill="currentcolor" width="48px" height="48px" viewBox="0 0 60 67">
+<svg xmlns="http://www.w3.org/2000/svg" fill="currentcolor" viewBox="0 0 60 67">
 <path d="M50.365 51C52.568 51 54 49.276 54 46.877V19.999H38.5c-1.104 0-2.5-.515-2.5-1.619V3.999H21.134C19.02 3.999 16 4.813 16 6.876v5.123H26.28c.039 0 .045.199.083.201.036-.002.039.18.075.18.792 0 1.408.465 1.732 1.132L45.6 29.571c.414.379.4.914.4 1.476V51h4.365ZM39.716 29 28 19.122V29H39.716ZM42 59.37V33H26.5c-1.104 0-2.5-.515-2.5-1.619V16H8.642C7.095 16 4 16.769 4 19.369V59.37C4 61.619 6.319 63 8.642 63H37.873C40.062 63 42 61.733 42 59.37ZM40 6.665V16H51.149L40 6.665Zm17.246 9.863c.734.296 1.129 1.013 1.129 1.853 0 .03-.133.059-.134.089.001.028-.241.056-.241.085V46.878C58 51.487 54.775 55 50.365 55H46v4.37C46 63.712 42.55 67 37.873 67H8.642C4.077 67 0 63.862 0 59.37V19.369C0 15.124 3.696 12 8.642 12H12V6.877C12 2.81 15.727 0 21.134 0H38.771c.499 0 .981.377 1.349.713L57.246 16.528Z">
 </path>
 </svg>
@@ -123,28 +122,28 @@ Opciones avanzadas
 </summary>
 <div class="container">
 <label for="separadorc" style="grid-area:ah;">Separador para campos separados por comas</label>
-<INPUT type="text" name="reemplazocomas" style="grid-area:a;" placeholder="," id="separadorc">
+<input type="text" name="reemplazocomas" style="grid-area:a;" placeholder="," id="separadorc">
 <label for="rowbreak" style="grid-area:ch;">Comando rowbreak</label>
-<INPUT type="text" name="reemplazocomas" style="grid-area:c;" placeholder="[wl]" id="rowbreak">
+<input type="text" name="reemplazocomas" style="grid-area:c;" placeholder="[wl]" id="rowbreak">
 <label for="colbreak" style="grid-area:dh;">Comando columnbreak</label>
-<INPUT type="text" name="saltodecolumna" style="grid-area:d;" placeholder="[hl]" id="colbreak">
+<input type="text" name="saltodecolumna" style="grid-area:d;" placeholder="[hl]" id="colbreak">
 <label for="linebreakcommand" style="grid-area:fh;">Comando de salto de linea</label>
-<INPUT type="text" name="saltodelinea" style="grid-area:f;" placeholder="[br]" id="linebreakcommand">
+<input type="text" name="saltodelinea" style="grid-area:f;" placeholder="[br]" id="linebreakcommand">
 <label for="tableatributes" style="grid-area:gh;">Atributos de la tabla</label>
 <textarea type="text" name="atributostabla" style="grid-area:g;" placeholder="" id="tableatributes"></textarea>
 <label for="separadorentreatributoynombre" style="grid-area:ih;">Separador entre atributo y nombre de atributo</label>
-<INPUT type="text" name="separadorentreatributoynombre" style="grid-area:i;" placeholder="=" id="separadorentreatributoynombre">
+<input type="text" name="separadorentreatributoynombre" style="grid-area:i;" placeholder="=" id="separadorentreatributoynombre">
 <label for="separadordeatributos" style="grid-area:jh;">Separador de atributos</label>
-<INPUT type="text" name="separadordeatributos" style="grid-area:j;" placeholder="|" id="separadordeatributos">
+<input type="text" name="separadordeatributos" style="grid-area:j;" placeholder="|" id="separadordeatributos">
 <label for="rowsofheader" style="grid-area:lh;">Filas de encabezado</label>
-<INPUT type="text" inputmode="numeric" name="lineasdeencabezado" style="grid-area:l;" placeholder="1" id="rowsofheader">
+<input type="text" inputmode="numeric" name="lineasdeencabezado" style="grid-area:l;" placeholder="1" id="rowsofheader">
 </div>
 <div class="container">
 <label for="minWidth" style="grid-area:ah;">Columnas minimas</label>
 <label for="minHeight" style="grid-area:ch;">Filas minimas</label>
 <br>
 <input type="text" inputmode="numeric" name="minWidth" style="grid-area:a;" placeholder="1" id="minWidth">
-<svg input1="minWidth" input2="minHeight" id="girartabla" class="girar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+<svg input1="minWidth" input2="minHeight" id="girartabla" class="girar" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
 
 <path d="M1.539,8.001 C2.367,8.001 2.918,7.45 2.918,6.622 L2.914,6.187 C2.914,6.187 2.709,4.954 4.354,4.954 L11.015,5 L11.015,6.759 C11.338,7.081 11.862,7.081 12.185,6.759 L14.758,4.187 C15.08,3.863 15.08,3.339 14.758,3.017 L12.185,0.292 C11.862,-0.03 11.338,-0.03 11.015,0.292 L11.015,2.137 C10.854,2.09 4.562,2.063 4.562,2.063 C0.851,2.063 0.039,4.492 0.039,5.47 L0.039,6.501 C0.039,7.329 0.711,8.001 1.539,8.001 L1.539,8.001 Z">
 </path>
@@ -160,8 +159,8 @@ Estilizar Filas y Columnas
 </summary>
 <div class="container">
 <label for="estilizarcolumna" style="grid-area:ah;" commadivided ao="a">Columnas a estilizar (separadas por comas)</label>
-<INPUT type="text" inputmode="numeric" name="columna a enlazar" style="grid-area:a;" placeholder="0" id="estilizarcolumna">
-<svg input1="estilizarcolumna" input2="estilizarfila" id="girarestilo" class="girar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+<input type="text" inputmode="numeric" name="columna a enlazar" style="grid-area:a;" placeholder="0" id="estilizarcolumna">
+<svg input1="estilizarcolumna" input2="estilizarfila" id="girarestilo" class="girar" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
 
 <path d="M1.539,8.001 C2.367,8.001 2.918,7.45 2.918,6.622 L2.914,6.187 C2.914,6.187 2.709,4.954 4.354,4.954 L11.015,5 L11.015,6.759 C11.338,7.081 11.862,7.081 12.185,6.759 L14.758,4.187 C15.08,3.863 15.08,3.339 14.758,3.017 L12.185,0.292 C11.862,-0.03 11.338,-0.03 11.015,0.292 L11.015,2.137 C10.854,2.09 4.562,2.063 4.562,2.063 C0.851,2.063 0.039,4.492 0.039,5.47 L0.039,6.501 C0.039,7.329 0.711,8.001 1.539,8.001 L1.539,8.001 Z">
 </path>
@@ -169,7 +168,7 @@ Estilizar Filas y Columnas
 </path>
 </svg>
 <label for="estilizarfila" style="grid-area:ch;" commadivided ao="a">Filas a estilizar (separadas por comas)</label>
-<INPUT type="text" inputmode="numeric" name="fila a estilizar" style="grid-area:c;" placeholder="0" id="estilizarfila">
+<input type="text" inputmode="numeric" name="fila a estilizar" style="grid-area:c;" placeholder="0" id="estilizarfila">
 <label for="textoocelda" style="grid-area:dh;">Estilizar texto o celda</label>
 <select id="textoocelda" style="grid-area:d;">
 <option value="cell">celda</option>
@@ -189,50 +188,50 @@ Opciones de enlaces
 <div class="container">
 <label for="enlazarcol" style="grid-area:ah;" commadivided ao="a">Columnas a enlazar (separadas por comas)</label>
 <label for="enlazarfil" style="grid-area:ch;" commadivided ao="a">Filas a enlazar (separadas por comas)</label>
-<INPUT type="text" inputmode="numeric" name="columna a enlazar" style="grid-area:a;" placeholder="Pensado para FeatherWiki" id="enlazarcol">
-<svg input1="enlazarcol" input2="enlazarfil" id="girarenlaces" class="girar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+<input type="text" inputmode="numeric" name="columna a enlazar" style="grid-area:a;" placeholder="Pensado para FeatherWiki" id="enlazarcol">
+<svg input1="enlazarcol" input2="enlazarfil" id="girarenlaces" class="girar" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
 
 <path d="M1.539,8.001 C2.367,8.001 2.918,7.45 2.918,6.622 L2.914,6.187 C2.914,6.187 2.709,4.954 4.354,4.954 L11.015,5 L11.015,6.759 C11.338,7.081 11.862,7.081 12.185,6.759 L14.758,4.187 C15.08,3.863 15.08,3.339 14.758,3.017 L12.185,0.292 C11.862,-0.03 11.338,-0.03 11.015,0.292 L11.015,2.137 C10.854,2.09 4.562,2.063 4.562,2.063 C0.851,2.063 0.039,4.492 0.039,5.47 L0.039,6.501 C0.039,7.329 0.711,8.001 1.539,8.001 L1.539,8.001 Z">
 </path>
 <path d="M13.5,8.042 C12.672,8.042 12,8.626 12,9.454 L12.002,10.411 C11.957,10.768 11.357,11.001 10.477,11.001 L3.938,11.001 L3.936,9.442 C3.614,9.12 3.09,9.12 2.766,9.442 L0.194,12.014 C-0.128,12.338 -0.128,12.862 0.194,13.184 L2.766,15.756 C3.09,16.08 3.614,16.08 3.936,15.756 L3.938,13.905 L10.477,13.905 C14.188,13.905 15,11.463 15,10.484 L15,9.453 C15,8.626 14.328,8.042 13.5,8.042 L13.5,8.042 Z">
 </path>
 </svg>
-<INPUT type="text" inputmode="numeric" name="fila a enlazar" style="grid-area:c;" placeholder="Pensado para FeatherWiki" id="enlazarfil">
+<input type="text" inputmode="numeric" name="fila a enlazar" style="grid-area:c;" placeholder="Pensado para FeatherWiki" id="enlazarfil">
 <label for="enlaceinicio" style="grid-area:dh;">Inicio del enlace</label>
 <label for="enlacefin" style="grid-area:fh;">Fin del enlace</label>
-<INPUT type="text" name="Inicio enlace" style="grid-area:d;" placeholder="[[" id="enlaceinicio">
-<INPUT type="text" name="Fin enlace" style="grid-area:f;" placeholder="]]" id="enlacefin">
+<input type="text" name="Inicio enlace" style="grid-area:d;" placeholder="[[" id="enlaceinicio">
+<input type="text" name="Fin enlace" style="grid-area:f;" placeholder="]]" id="enlacefin">
 <label for="ignorarinicioenlace" style="grid-area:gh;">Excluir del inicio del enlace</label>
 <label for="ignorarfinenlace" style="grid-area:ih;">Excluir del fin del enlace</label>
-<INPUT type="text" name="ignorarinicio" style="grid-area:g;" placeholder="*" id="ignorarinicioenlace">
-<INPUT type="text" name="ignorarfin" style="grid-area:i;" placeholder="*" id="ignorarfinenlace">
+<input type="text" name="ignorarinicio" style="grid-area:g;" placeholder="*" id="ignorarinicioenlace">
+<input type="text" name="ignorarfin" style="grid-area:i;" placeholder="*" id="ignorarfinenlace">
 <label for="enlazarpalabras" style="grid-area:zh;" commadivided ao="a">Palabras a enlazar (separadas por comas)</label>
-<INPUT type="text" name="enlazarpalabras" style="grid-area:z;" placeholder="" id="enlazarpalabras">
+<input class="notExpandAllCell" type="text" name="enlazarpalabras" style="grid-area:z;" placeholder="" id="enlazarpalabras">
 </div>
 </details>
 <div class="container">
-<INPUT TYPE="button" VALUE="Crear tabla por filas" style="grid-area:ahh;cursor:pointer;" id="modoFila">
-<INPUT TYPE="button" VALUE="Crear tabla por columnas" style="grid-area:chh;cursor:pointer;" id="modoColumna">
+<input TYPE="button" VALUE="Crear tabla por filas" style="grid-area:ahh;cursor:pointer;" id="modoFila">
+<input TYPE="button" VALUE="Crear tabla por columnas" style="grid-area:chh;cursor:pointer;" id="modoColumna">
 <label for="widthform" style="grid-area:ah;">Columnas</label>
 <label for="heigthform" style="grid-area:ch;">Filas</label>
 <br>
-<INPUT type="text" inputmode="numeric" name="width" style="grid-area:a;" placeholder="2" id="widthform">
-<svg input1="widthform" input2="heigthform" id="girartabla" class="girar" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+<input type="text" inputmode="numeric" name="width" style="grid-area:a;" placeholder="2" id="widthform">
+<svg input1="widthform" input2="heigthform" id="girartabla" class="girar" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
 
 <path d="M1.539,8.001 C2.367,8.001 2.918,7.45 2.918,6.622 L2.914,6.187 C2.914,6.187 2.709,4.954 4.354,4.954 L11.015,5 L11.015,6.759 C11.338,7.081 11.862,7.081 12.185,6.759 L14.758,4.187 C15.08,3.863 15.08,3.339 14.758,3.017 L12.185,0.292 C11.862,-0.03 11.338,-0.03 11.015,0.292 L11.015,2.137 C10.854,2.09 4.562,2.063 4.562,2.063 C0.851,2.063 0.039,4.492 0.039,5.47 L0.039,6.501 C0.039,7.329 0.711,8.001 1.539,8.001 L1.539,8.001 Z">
 </path>
 <path d="M13.5,8.042 C12.672,8.042 12,8.626 12,9.454 L12.002,10.411 C11.957,10.768 11.357,11.001 10.477,11.001 L3.938,11.001 L3.936,9.442 C3.614,9.12 3.09,9.12 2.766,9.442 L0.194,12.014 C-0.128,12.338 -0.128,12.862 0.194,13.184 L2.766,15.756 C3.09,16.08 3.614,16.08 3.936,15.756 L3.938,13.905 L10.477,13.905 C14.188,13.905 15,11.463 15,10.484 L15,9.453 C15,8.626 14.328,8.042 13.5,8.042 L13.5,8.042 Z">
 </path>
 </svg>
-<INPUT type="text" inputmode="numeric" name="height" style="grid-area:c;" placeholder="3" id="heigthform">
+<input type="text" inputmode="numeric" name="height" style="grid-area:c;" placeholder="3" id="heigthform">
 </div>
 <label for="separacion" commadivided ao="o">caracteres de separación (separados por comas)</label>
 <br>
-<INPUT type="text" name="caracteres de separacion" placeholder="," id="separacion">
+<input type="text" name="caracteres de separacion" placeholder="," id="separacion">
 <br>
 <label for="borrar" commadivided ao="o">Caracteres a borrar del inicio (separados por comas)</label>
 <br>
-<INPUT type="text" name="Caracteres a borrar del inicio" placeholder="^,~" id="borrar">
+<input type="text" name="Caracteres a borrar del inicio" placeholder="^,~" id="borrar">
 <br>
 <label for="alineamiento">Alineamiento:</label>
 
@@ -266,17 +265,17 @@ Opciones de enlaces
 <label for="CSSinURL" style="margin-right:0.5em;">Añadir CSS personalizado en la URL</label>
 </span>
 </span>
-</FORM>
+</form>
 <label for="textotabla">Código HTML de la tabla</label>
 <br>
 <textarea class="CodeTextArea" id="textotabla"></textarea>
 <button class="copybutton" id="copiartabla" inputcopiar="textotabla" title="Copiar código de la tabla al portapapeles">
-<svg xmlns="http://www.w3.org/2000/svg" fill="currentcolor" width="48px" height="48px" viewBox="0 0 60 67">
+<svg xmlns="http://www.w3.org/2000/svg" fill="currentcolor" viewBox="0 0 60 67">
 <path d="M50.365 51C52.568 51 54 49.276 54 46.877V19.999H38.5c-1.104 0-2.5-.515-2.5-1.619V3.999H21.134C19.02 3.999 16 4.813 16 6.876v5.123H26.28c.039 0 .045.199.083.201.036-.002.039.18.075.18.792 0 1.408.465 1.732 1.132L45.6 29.571c.414.379.4.914.4 1.476V51h4.365ZM39.716 29 28 19.122V29H39.716ZM42 59.37V33H26.5c-1.104 0-2.5-.515-2.5-1.619V16H8.642C7.095 16 4 16.769 4 19.369V59.37C4 61.619 6.319 63 8.642 63H37.873C40.062 63 42 61.733 42 59.37ZM40 6.665V16H51.149L40 6.665Zm17.246 9.863c.734.296 1.129 1.013 1.129 1.853 0 .03-.133.059-.134.089.001.028-.241.056-.241.085V46.878C58 51.487 54.775 55 50.365 55H46v4.37C46 63.712 42.55 67 37.873 67H8.642C4.077 67 0 63.862 0 59.37V19.369C0 15.124 3.696 12 8.642 12H12V6.877C12 2.81 15.727 0 21.134 0H38.771c.499 0 .981.377 1.349.713L57.246 16.528Z">
 </path>
 </svg>
 </button>
 <pre class="table-information" id="tabledimensions"></pre>
 <!--< class="se-table-size-auto"p>inspeccionar > seleccionar elemento table  > copiar HTML externo > pegar en vista de código de sun editor > salir de vista de código</p>-->
-</BODY>
-</HTML>
+</body>
+</html>
