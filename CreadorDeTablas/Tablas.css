@@ -1,6 +1,8 @@
 html {
-    font-size: clamp(16px, 1.172vw, 32px);
     font-family: Segoe UI,BlinkMacSystemFont,-apple-system,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+html, input, button, textarea, select, option {
+    font-size: clamp(16px, 1.172vw, 32px);
 }
 pre.table-information {
   margin: 0;
@@ -14,21 +16,70 @@ span.flexspan {
 input[type="checkbox"] {
     transform: scale(2);
     margin: 0.5em;
+/*
+    margin: 0.25em;
+    width: 1.625em;
+    height: 1.625em;
+*/
 }
-.copy, .save {
+
+.message {
   position: fixed;
-  bottom: 2em;
+  bottom: -3em;
   width: 100%;
   transition: bottom 0.5s ease-in 0s;
 }
-.copy p, .save p {
+.message p {
   width: fit-content;
   margin: auto;
   background-color: #303040;
   color: #f0feff;
   padding: 0.3em 1em;
-  border: 0.2em solid #5d5e66;
+  border: 0.2em solid #0094d4;
+  max-width: 50%;
+  box-shadow: 0px 0px 10px 2px #0094d4;
+  word-break: break-all;
 }
+
+.message p::before {
+    content: '';
+    display: inline-block;
+    height: 1.25em;
+    width: 1.25em;
+    vertical-align: middle;
+    background-size: contain;
+    background-repeat: no-repeat;
+    bottom: 0.15em;
+    left: -0.3em;
+    position: relative;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"><path d="M15 0a1 1 0 000 30A1 1 0 0015 0" fill="%230094d4"/><path d="M15 6q2 0 2 4t-2 4-2-4 2-4m0 11a1 1 0 010 4 1 1 0 010-4" fill="%23fff"/></svg>');
+}
+.success p {
+    border-color: #00d940;
+    box-shadow: 0px 0px 10px 2px #00d940;
+}
+.success p::before {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" style=""><path d="M15 0a1 1 0 000 30A1 1 0 0015 0" fill="%2300d940"></path><path d="M18.9 9H21v1.8L13.4 21 9 16.3V14.2h1.6l2.3 2.5Z" fill="%23fff"></path></svg>');
+}
+.warning p {
+    border-color: #fecc00;
+    box-shadow: 0px 0px 10px 2px #fecc00;
+}
+.warning p::before {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 30"><path d="M18 0 0 30H36Z" fill="%23fecc00"/><path d="M18.3 21.1a1 1 0 000 4 1 1 0 000-4m0-9q-2 0-2 3t2 3 2-3q0-3-2-3" fill="%23fff"/></svg>');
+    height: 1.0416666666666667em;
+}
+.error p {
+    border-color: #f44336;
+    box-shadow: 0px 0px 10px 2px #f44336;
+}
+.error p::before {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"><path d="M15 0a1 1 0 000 30A1 1 0 0015 0" fill="%23f44336"/><path d="M9 9h2l4 4 4-4h2v2l-4 4 4 4v2H19l-4-4-4 4H9V19l4-4-4-4Z" fill="%23fff"/></svg>');
+}
+.message {
+    z-index: 1;
+}
+
 a {
   font-size: 1.25em;
 }
@@ -53,8 +104,13 @@ details[open] {
 }
 .girar {
   grid-area:b;
-  align-self: center;
+  place-self: center;
   cursor:pointer;
+  width: 1.5em;
+  height: 1.5em
+}
+button {
+    box-sizing: content-box;
 }
 .container {
   display: grid;
@@ -83,7 +139,10 @@ details[open] {
   grid-template-columns: 12.313em 2.75em 12.313em;
   justify-content: start;
   align-items: start;
-  justify-items: center;
+}
+
+.container input[type="button"], .container, select, .notExpandAllCell {
+    justify-self: center;
 }
 
 .container + .container {
@@ -95,14 +154,12 @@ details[open] {
     align-self: end;
 }
 
-input, textarea, select, label, button{
-  font-size: clamp(16px, 1.172vw, 32px);
-}
+
 svg {
   cursor:pointer;
 }
 #textoarray {
-  height: 200px;
+  height: 12.5em;
   width:stretch;
   width:-webkit-fill-available;
   width:-moz-available;
@@ -114,11 +171,16 @@ svg {
   border-radius: 100px;
   background-color: #fff0;
   border-width: 0px;
+  width: 3em;
+  height: 3em;
 }
 .copybutton {
   display: inline-block;
   border-width: 0;
   background-color: #fff0;
+  width: 3em;
+  height: 3em;
+  padding: 0;
 }
 .claro {
   background: #e4e7eb;
@@ -133,7 +195,7 @@ input.claro, textarea.claro, select.claro {
   background: #ffffff;
   color: black;
 }
-input[type="text"] {
+input[type="text"], textarea {
  font-family: monospace; 
 }
 input[type="button"], button {
@@ -179,6 +241,27 @@ input[type="button"], button {
 }
 
 .CodeTextArea {
-  width: 25em;
+  width: 22em;
   height: 15.625em;
+  display: inline-block;
+}
+.linkBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+@media (max-width:50rem) {
+	html, input, button, textarea, select, option {
+		font-size: min(3.35vw, 16px);
+	}
+	input[type="checkbox"] {
+	    transform: scale(1.5);
+/*
+	    width: 1.5em;
+	    height: 1.5em;
+	    margin: 0.25em;
+*/
+	}
+
 }
